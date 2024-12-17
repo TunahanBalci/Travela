@@ -12,8 +12,8 @@ using TravelApp.Data;
 namespace TravelApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241217025354_initialsetup3")]
-    partial class initialsetup3
+    [Migration("20241217085234_mig")]
+    partial class mig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

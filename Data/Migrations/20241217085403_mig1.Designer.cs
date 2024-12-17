@@ -12,8 +12,8 @@ using TravelApp.Data;
 namespace TravelApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241217023234_initialsetup1")]
-    partial class initialsetup1
+    [Migration("20241217085403_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -371,8 +371,8 @@ namespace TravelApp.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("Cost_Of_Living")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<int>("Cost_Of_Living")
+                        .HasColumnType("int");
 
                     b.Property<string>("Location")
                         .IsRequired()

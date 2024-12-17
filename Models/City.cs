@@ -18,8 +18,7 @@ namespace TravelApp.Models
         [StringLength(100)]
         public string Location { get; set; }
 
-        [Column(TypeName = "decimal(10,2)")]
-        public decimal Cost_Of_Living { get; set; }
+        public int Cost_Of_Living { get; set; }
 
         [StringLength(50)]
         public string Climate { get; set; }

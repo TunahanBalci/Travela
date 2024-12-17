@@ -56,12 +56,12 @@ namespace TravelApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("City_ID,Name,Location,Cost_Of_Living,Climate,Terrain")] City city)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(city);
+
+
+            _context.Add(city);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            
             return View(city);
         }
 
@@ -93,8 +93,8 @@ namespace TravelApp.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            
+            
                 try
                 {
                     _context.Update(city);
@@ -112,7 +112,7 @@ namespace TravelApp.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            
             return View(city);
         }
 

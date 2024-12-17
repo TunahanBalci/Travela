@@ -368,8 +368,8 @@ namespace TravelApp.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("Cost_Of_Living")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<int>("Cost_Of_Living")
+                        .HasColumnType("int");
 
                     b.Property<string>("Location")
                         .IsRequired()

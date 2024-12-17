@@ -56,12 +56,12 @@ namespace TravelApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("User_ID,Name,Email,Password")] User user)
         {
-            if (ModelState.IsValid)
-            {
+           
+            
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            
             return View(user);
         }
 
@@ -93,8 +93,7 @@ namespace TravelApp.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            
                 try
                 {
                     _context.Update(user);
@@ -112,7 +111,7 @@ namespace TravelApp.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            
             return View(user);
         }
 
