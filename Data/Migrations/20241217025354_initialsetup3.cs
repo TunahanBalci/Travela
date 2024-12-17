@@ -5,7 +5,7 @@
 namespace TravelApp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class fixuser : Migration
+    public partial class initialsetup3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -7,6 +7,7 @@ namespace TravelApp.Models
     public class City
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int City_ID { get; set; }
 
         [Required]

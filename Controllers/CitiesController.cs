@@ -10,22 +10,22 @@ using TravelApp.Models;
 
 namespace TravelApp.Controllers
 {
-    public class UsersController : Controller
+    public class CitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UsersController(ApplicationDbContext context)
+        public CitiesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Cities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.Cities.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Cities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace TravelApp.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.User_ID == id);
-            if (user == null)
+            var city = await _context.Cities
+                .FirstOrDefaultAsync(m => m.City_ID == id);
+            if (city == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(city);
         }
 
-        // GET: Users/Create
+        // GET: Cities/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Cities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("User_ID,Name,Email,Password")] User user)
+        public async Task<IActionResult> Create([Bind("City_ID,Name,Location,Cost_Of_Living,Climate,Terrain")] City city)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                _context.Add(city);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(city);
         }
 
-        // GET: Users/Edit/5
+        // GET: Cities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace TravelApp.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var city = await _context.Cities.FindAsync(id);
+            if (city == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(city);
         }
 
-        // POST: Users/Edit/5
+        // POST: Cities/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("User_ID,Name,Email,Password")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("City_ID,Name,Location,Cost_Of_Living,Climate,Terrain")] City city)
         {
-            if (id != user.User_ID)
+            if (id != city.City_ID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace TravelApp.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(city);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.User_ID))
+                    if (!CityExists(city.City_ID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace TravelApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(city);
         }
 
-        // GET: Users/Delete/5
+        // GET: Cities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace TravelApp.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.User_ID == id);
-            if (user == null)
+            var city = await _context.Cities
+                .FirstOrDefaultAsync(m => m.City_ID == id);
+            if (city == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(city);
         }
 
-        // POST: Users/Delete/5
+        // POST: Cities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user != null)
+            var city = await _context.Cities.FindAsync(id);
+            if (city != null)
             {
-                _context.Users.Remove(user);
+                _context.Cities.Remove(city);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool CityExists(int id)
         {
-            return _context.Users.Any(e => e.User_ID == id);
+            return _context.Cities.Any(e => e.City_ID == id);
         }
     }
 }

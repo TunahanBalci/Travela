@@ -12,7 +12,7 @@ using TravelApp.Data;
 namespace TravelApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241216231323_initialsetup1")]
+    [Migration("20241217023234_initialsetup1")]
     partial class initialsetup1
     {
         /// <inheritdoc />
