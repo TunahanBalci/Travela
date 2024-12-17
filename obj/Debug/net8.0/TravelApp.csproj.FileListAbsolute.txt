@@ -266,3 +266,4 @@ C:\Users\pc\source\repos\TravelApp\TravelApp\obj\Debug\net8.0\refint\TravelApp.d
 C:\Users\pc\source\repos\TravelApp\TravelApp\obj\Debug\net8.0\TravelApp.pdb
 C:\Users\pc\source\repos\TravelApp\TravelApp\obj\Debug\net8.0\TravelApp.genruntimeconfig.cache
 C:\Users\pc\source\repos\TravelApp\TravelApp\obj\Debug\net8.0\ref\TravelApp.dll
+C:\Users\pc\source\repos\TravelApp\TravelApp\obj\Debug\net8.0\TravelApp.sourcelink.json
