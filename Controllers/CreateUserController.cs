@@ -99,7 +99,6 @@ namespace TravelApp.Controllers
             }
         }
 
-
         [HttpGet]
         [Route("CreateUser/EditUser/{id}")]
         public async Task<IActionResult> EditUser(Guid id)
@@ -116,7 +115,7 @@ namespace TravelApp.Controllers
                 if (user.IsAdmin)
                 {
                     ModelState.AddModelError("", "Admin users cannot be edited.");
-                    return RedirectToAction("ListUsers", "AdminPanel"); // Redirect with an error
+                    return RedirectToAction("ListUsers", "AdminPanel");
                 }
 
                 return View(user);
@@ -147,7 +146,7 @@ namespace TravelApp.Controllers
             if (existingUser.IsAdmin)
             {
                 ModelState.AddModelError("", "Admin users cannot be edited.");
-                return RedirectToAction("ListUsers", "AdminPanel"); // Redirect with an error
+                return RedirectToAction("ListUsers", "AdminPanel");
             }
 
             if (!ModelState.IsValid)
@@ -162,7 +161,7 @@ namespace TravelApp.Controllers
 
                 if (!string.IsNullOrEmpty(user.Password))
                 {
-                    existingUser.Password = user.Password; // Store the password as plain text
+                    existingUser.Password = user.Password;
                 }
 
                 existingUser.IsAdmin = user.IsAdmin;
@@ -178,6 +177,5 @@ namespace TravelApp.Controllers
                 return View(user);
             }
         }
-
     }
 }

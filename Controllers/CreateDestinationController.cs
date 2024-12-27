@@ -176,7 +176,7 @@ namespace TravelApp.Controllers
                 destination.Description = model.Description;
                 destination.Location = model.Location;
                 destination.CityID = model.CityID;
-                destination.Image_Path = $"/images/accommodations/{model.Name}.png"; // Set Image_Path dynamically
+                destination.Image_Path = $"/images/accommodations/{model.Name}.png";
 
                 var selectedActivities = await _context.Activities
                     .Where(a => model.SelectedActivityIds.Contains(a.ID))

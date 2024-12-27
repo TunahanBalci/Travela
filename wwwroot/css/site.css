@@ -21,16 +21,16 @@ body {
   margin-bottom: 60px;
 }
 .btn-custom {
-    font-size: 1rem; /* Reduced size by 20% from 1.25rem */
-    padding: 8px 16px; /* Adjusted padding proportionally */
+    font-size: 1rem;
+    padding: 8px 16px; 
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
-    transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effects */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.2s, box-shadow 0.2s; 
 }
 
     .btn-custom:hover {
-        transform: translateY(-2px); /* Slight lift effect on hover */
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
     }
 
 .btn-info-custom {

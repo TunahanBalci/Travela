@@ -7,7 +7,6 @@
 <h2>Edit Accommodation</h2>
 
 <form asp-action="EditAccommodation" asp-controller="CreateAccommodation" method="post">
-    @* Display Validation Summary *@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <input type="hidden" asp-for="ID" />
@@ -52,7 +51,6 @@
         <span asp-validation-for="CityID" class="text-danger"></span>
     </div>
 
-    <!-- Activities Selection -->
     <div class="form-group">
         <label>Activities</label>
         @if (Model.Activities != null && Model.Activities.Any())
@@ -82,7 +80,6 @@
         }
     </div>
 
-    <!-- Amenities Selection -->
     <div class="form-group">
         <label>Amenities</label>
         @if (Model.Amenities != null && Model.Amenities.Any())
@@ -104,9 +101,7 @@
                 }
             </div>
         }
-
         else
-
         {
             <p>No amenities available.</p>
         }

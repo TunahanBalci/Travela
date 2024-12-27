@@ -7,31 +7,26 @@
 <h2>Create Destination</h2>
 
 <form asp-action="CreateDestination" asp-controller="CreateDestination" method="post">
-    @* Display Validation Summary *@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <!-- Name -->
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <!-- Description -->
     <div class="form-group">
         <label asp-for="Description" class="control-label"></label>
         <textarea asp-for="Description" class="form-control"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
 
-    <!-- Location -->
     <div class="form-group">
         <label asp-for="Location" class="control-label"></label>
         <input asp-for="Location" class="form-control" />
         <span asp-validation-for="Location" class="text-danger"></span>
     </div>
 
-    <!-- City -->
     <div class="form-group">
         <label asp-for="CityID" class="control-label">City</label>
         <select asp-for="CityID"
@@ -42,7 +37,6 @@
         <span asp-validation-for="CityID" class="text-danger"></span>
     </div>
 
-    <!-- Activities -->
     <div class="form-group">
         <label>Activities</label>
         @if (Model.Activities != null && Model.Activities.Any())
@@ -64,15 +58,12 @@
                 }
             </div>
         }
-
         else
-
         {
             <p>No activities available.</p>
         }
     </div>
 
-    <!-- Attractions -->
     <div class="form-group">
         <label for="Attractions">Attractions</label>
         @if (Model.Attractions != null && Model.Attractions.Any())
@@ -84,9 +75,7 @@
                     class="form-control">
             </select>
         }
-
         else
-
         {
             <p>No attractions available.</p>
         }

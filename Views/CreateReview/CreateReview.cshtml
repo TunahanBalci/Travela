@@ -8,21 +8,18 @@
 
 <form asp-action="CreateReview" asp-controller="CreateReview" method="post">
     <div class="container" style="margin-top:50px; margin-bottom:40px;">
-        <!-- Rating -->
         <div class="form-group">
             <label asp-for="Rating"></label>
             <input asp-for="Rating" type="number" min="0" max="5" class="form-control" required />
             @Html.ValidationMessageFor(model => model.Rating, "Rating must be between 0 and 5.", new { @class = "text-danger" })
         </div>
 
-        <!-- Comment -->
         <div class="form-group">
             <label asp-for="Comment"></label>
             <textarea asp-for="Comment" class="form-control"></textarea>
             @Html.ValidationMessageFor(model => model.Comment, "Comment cannot exceed 1000 characters.", new { @class = "text-danger" })
         </div>
 
-        <!-- User Selection -->
         <div class="form-group">
             <label asp-for="UserID">User</label>
             <select asp-for="UserID" asp-items="Model.Users" class="form-control select2" required>
@@ -31,7 +28,6 @@
             @Html.ValidationMessageFor(model => model.UserID, "User selection is required.", new { @class = "text-danger" })
         </div>
 
-        <!-- Entity Type Selection -->
         <div class="form-group">
             <label asp-for="EntityType">Entity Type</label>
             <select asp-for="EntityType" class="form-control select2" id="EntityType" required>
@@ -43,7 +39,6 @@
             @Html.ValidationMessageFor(model => model.EntityType, "Entity Type is required.", new { @class = "text-danger" })
         </div>
 
-        <!-- Entity ID Selection -->
         <div class="form-group">
             <label asp-for="EntityID">Entity</label>
             <select asp-for="EntityID" class="form-control select2" id="EntityID" required disabled>
@@ -52,7 +47,6 @@
             @Html.ValidationMessageFor(model => model.EntityID, "Entity selection is required.", new { @class = "text-danger" })
         </div>
 
-        <!-- Submit and Return Buttons -->
         <div class="form-group">
             <button type="submit" class="btn btn-success">Create Review</button>
             <button type="button" onclick="location.href='@Url.Action("ListReviews", "AdminPanel")'" class="btn btn-secondary">Return to Admin Panel</button>
@@ -63,18 +57,12 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-    <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-    <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
         $(document).ready(function () {
-            // Initialize Select2
             $('.select2').select2({
                 placeholder: '-- Select an option --',
                 allowClear: true,
@@ -84,10 +72,8 @@
             const entitySelect = $('#EntityID');
             const entityTypeSelect = $('#EntityType');
 
-            // Initially disable the Entity dropdown
             entitySelect.prop('disabled', true);
 
-            // Listen for changes in EntityType dropdown
             entityTypeSelect.on('change', function () {
                 const selectedType = $(this).val();
                 entitySelect.empty();
@@ -96,13 +82,11 @@
                 if (selectedType) {
                     entitySelect.prop('disabled', false);
 
-                    // AJAX call to fetch entities
                     $.ajax({
                         url: '@Url.Action("GetEntities", "CreateReview")',
                         type: 'GET',
                         data: { entityType: selectedType },
                         success: function (data) {
-                            // Populate the Entity dropdown
                             $.each(data, function (index, item) {
                                 entitySelect.append('<option value="' + item.value + '">' + item.text + '</option>');
                             });

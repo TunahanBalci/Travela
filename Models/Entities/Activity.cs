@@ -34,7 +34,7 @@ namespace TravelApp.Models.Entities
         public double? Average_Rating
         {
             get => _averageRating;
-            set => _averageRating = value; // Allow setting from code
+            set => _averageRating = value;
         }
 
         public ICollection<Accommodation> Accommodations { get; set; } = new List<Accommodation>();

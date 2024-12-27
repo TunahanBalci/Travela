@@ -17,7 +17,7 @@
 <div class="text-center">
     <h1 style="margin-top:75px;margin-bottom:50px;font-weight:bold;color:#526D82" class="display-4 mb-4">Got Plans For Future Travels?</h1>
 
-    <!-- Destination Grid with Pagination -->
+    <!-- Destination -->
     <div style="margin-top:150px" class="container mt-5 position-relative">
         <h2 style="color:#9DB2BF" class="h4 text-center mb-4">Explore Destinations</h2>
         <!-- Left Arrow -->
@@ -26,9 +26,7 @@
             <div class="arrow-bottom"></div>
         </div>
 
-        <!-- Destination Grid -->
         <div id="destinationContainer" class="row justify-content-center">
-            <!-- Destination elements will be dynamically populated here -->
         </div>
 
         <!-- Right Arrow -->
@@ -38,7 +36,7 @@
         </div>
     </div>
 
-    <!-- Accommodation Grid with Pagination -->
+    <!-- Accommodation Grid -->
     <div class="container mt-5 position-relative">
         <h2 style="color:#9DB2BF" class="h4 text-center mb-4">Explore Accommodations</h2>
         <!-- Left Arrow -->
@@ -47,9 +45,7 @@
             <div class="arrow-bottom"></div>
         </div>
 
-        <!-- Accommodation Grid -->
         <div id="accommodationContainer" class="row justify-content-center">
-            <!-- Accommodation elements will be dynamically populated here -->
         </div>
 
         <!-- Right Arrow -->
@@ -61,13 +57,11 @@
 </div>
 
 <script>
-    // Serialize the list of favorited destination IDs into a JavaScript array of strings
+    // Serialize
     const favoritedDestinationIds = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.FavoritedDestinationIds));
 
-    // Serialize the destinations with IDs as strings
     const destinations = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Destinations));
 
-    // Serialize the accommodations with IDs as strings
     const accommodations = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Accommodations));
 
     const itemsPerPage = 6;
@@ -204,17 +198,16 @@
         }
     }
 
-    // Event listeners for pagination arrows
+    // Event listeners for arrows
     document.getElementById('prevDestArrow').addEventListener('click', () => prevPage("Dest"));
     document.getElementById('nextDestArrow').addEventListener('click', () => nextPage("Dest"));
     document.getElementById('prevAccArrow').addEventListener('click', () => prevPage("Acc"));
     document.getElementById('nextAccArrow').addEventListener('click', () => nextPage("Acc"));
 
-    // Initial render of destinations and accommodations
     renderDestinations();
     renderAccommodations();
 
-    // Debugging: Log the favoritedDestinationIds and destinations
+    // Debugging
     console.log("Favorited Destination IDs:", favoritedDestinationIds);
     console.log("Destinations:", destinations);
 </script>
@@ -346,10 +339,8 @@
     </div>
 </div>
 
-<!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Limit chart sizes dynamically
     const chartConfig = {
         responsive: true,
         maintainAspectRatio: false,
@@ -428,7 +419,6 @@
     });
 </script>
 
-<!-- Custom Styles -->
 <style>
     .chart-wrapper {
         display: flex;
@@ -450,11 +440,9 @@
 </style>
 
 @section Styles {
-    <!-- Font Awesome for star icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* Star Ratings */
         .rating {
             margin-top: 5px;
         }
@@ -483,7 +471,7 @@
 
         .arrow-prev {
             left: -60px;
-            transform: translateY(-50%); scaleX(-1); /* Flip the arrow for previous */
+            transform: translateY(-50%); scaleX(-1); 
         }
 
         .arrow-next {
@@ -547,7 +535,7 @@
             color: gold;
             font-size: 1.5rem;
             z-index: 10;
-            pointer-events: none; /* Allows clicks to pass through */
+            pointer-events: none; 
         }
 
         /* Image Styling */

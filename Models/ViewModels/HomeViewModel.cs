@@ -13,7 +13,7 @@ namespace TravelApp.Models.ViewModels
         public IEnumerable<dynamic> TopUsersByReviews { get; set; }
         public IEnumerable<dynamic> DestinationRatings { get; set; }
         public IEnumerable<dynamic> CityRatings { get; set; }
-        public List<string> FavoritedDestinationIds { get; set; } // List of string IDs
+        public List<string> FavoritedDestinationIds { get; set; }
 
     }
 

@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "Destination Details";
 
-
-
     var fallbackImagePath = Url.Content("~/images/fallback-destination.jpg");
 
     bool isVisited = ViewBag.Visited ?? false;
@@ -13,7 +11,6 @@
 }
 
 <div style="display: flex; flex-direction: row; margin-top: 50px;">
-    <!-- Image and Visit Info Section -->
     <div style="text-align: center; margin: 1rem 0;">
         <img src="@Model.Image_Path" alt="@Model.Name" onerror="this.onerror=null;this.src='/images/fallback_destination.png';"
              style="width: 500px; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
@@ -23,17 +20,7 @@
             {
                 <form asp-action="MarkAsVisited" method="post">
                     <input type="hidden" name="DestinationID" value="@Model.ID" />
-                    <button type="submit" class="btn btn-success" style="
-                            margin-top: 25px;
-                            width:500px;
-                            background-color: #28a745;
-                            color: white;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 25px;
-                            font-size: 1.2rem;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                            transition: all 0.3s ease;">
+                    <button type="submit" class="btn btn-success" style="margin-top: 25px; width:500px; background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-size: 1.2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
                         Mark as Visited
                     </button>
                 </form>
@@ -51,7 +38,6 @@
                     <i class="fas fa-info-circle" style="margin-right: 5px;"></i> You have not reviewed this destination.
                 </div>
 
-                <!-- Review Form -->
                 <form asp-action="SubmitReview" asp-controller="Destination" method="post" style="margin-top: 15px;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="destinationId" value="@Model.ID" />
@@ -61,24 +47,14 @@
                             @for (int i = 1; i <= 5; i++)
 
                             {
-                                <i class="fa fa-star" data-value="@i" style="font-size: 2rem; color: #ddd; cursor: pointer; margin-right: 5px;"
-                                   onclick="document.getElementById('rating-input').value = '@i'; highlightStars(@i);"></i>
+                                <i class="fa fa-star" data-value="@i" style="font-size: 2rem; color: #ddd; cursor: pointer; margin-right: 5px;" onclick="document.getElementById('rating-input').value = '@i'; highlightStars(@i);"></i>
                             }
                         </div>
                         <input type="hidden" id="rating-input" name="rating" value="0" />
                     </div>
                     <textarea name="comment" id="review-comment" placeholder="Write your comment..."
-                              style="
-                        width: 100%;
-                        height: 120px;
-                        padding: 10px 15px;
-                        font-size: 1rem;
-                        border: 1px solid #dee2e6;
-                        border-radius: 10px;
-                        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-                        resize: none;
-                        transition: border-color 0.3s ease, box-shadow 0.3s ease;">
-                    </textarea>
+                              style="width: 100%; height: 120px; padding: 10px 15px; font-size: 1rem; border: 1px solid #dee2e6; border-radius: 10px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); resize: none; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                        </textarea>
 
                     <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Submit</button>
                 </form>
@@ -89,45 +65,24 @@
                 <p>@TempData["FeedbackMessage"]</p>
             }
         </div>
+
         <div style="margin-top: 15px;">
             @if (ViewBag.IsFavorited)
             {
-                <!-- Remove from Favorites Button -->
                 <form asp-action="RemoveFromFavorites" method="post" style="margin-top: 15px;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="DestinationID" value="@Model.ID" />
-                    <button type="submit" class="btn btn-danger" style="
-                margin-top: 15px;
-                width: 100%;
-                background-color: #dc3545;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 25px;
-                font-size: 1.2rem;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;">
+                    <button type="submit" class="btn btn-danger" style="margin-top: 15px; width: 100%; background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-size: 1.2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
                         Remove from Favorites
                     </button>
                 </form>
             }
             else
             {
-                <!-- Add to Favorites Button -->
                 <form asp-action="AddToFavorites" method="post" style="margin-top: 15px;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="DestinationID" value="@Model.ID" />
-                    <button type="submit" class="btn btn-warning" style="
-                margin-top: 15px;
-                width: 100%;
-                background-color: #ffc107;
-                color: black;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 25px;
-                font-size: 1.2rem;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;">
+                    <button type="submit" class="btn btn-warning" style="margin-top: 15px; width: 100%; background-color: #ffc107; color: black; border: none; padding: 10px 20px; border-radius: 25px; font-size: 1.2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
                         Add to Favorites
                     </button>
                 </form>
@@ -136,15 +91,12 @@
 
     </div>
 
-    <!-- Destination Details Section -->
     <div style="margin: 10px 25px 40px 25px; max-width: 600px;">
-        <!-- Destination Header -->
         <div>
             <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;color:#27374D">@Model.Name</h1>
             <p style="color: #526D82; transform: translateY(-10px);">@Model.City?.Name, @Model.Location</p>
         </div>
 
-        <!-- Destination Details -->
         <div style="margin-bottom: 1rem;">
             <p style="display: flex; align-items: center;">
                 @{
@@ -198,12 +150,10 @@
             </p>
         </div>
 
-        <!-- Destination Description -->
         <div style="margin-top: 50px; margin-bottom: 1rem;">
             <p>@Model.Description</p>
         </div>
 
-        <!-- Activities Section -->
         <div style="margin-top: 50px; margin-bottom: 1rem;">
             <h4 style="margin-bottom: 10px;color:#27374D">Activities</h4>
             @if (Model.Activities != null && Model.Activities.Any())
@@ -227,7 +177,6 @@
             }
         </div>
 
-        <!-- Attractions Section -->
         <div style="margin-top: 20px; margin-bottom: 1rem;">
             <h4 style="margin-bottom: 10px;color:#27374D">Attractions</h4>
             @if (Model.Attractions != null && Model.Attractions.Any())
@@ -248,71 +197,40 @@
         </div>
     </div>
 
-    <!-- Reviews Section -->
     <div style="margin: 1rem; flex: 1;">
         <h4 style="margin-bottom: 10px; text-decoration: underline;color:#27374D">Reviews</h4>
         @if (Model.Reviews != null && Model.Reviews.Any())
-
-
 
         {
             <ul style="list-style: none; padding: 0;">
                 @foreach (var review in Model.Reviews)
 
-
-
                 {
                     <li style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 10px 15px; margin-bottom: 10px; border-radius: 5px;">
-                        <!-- Render User Name -->
-                        <!-- Render Rating as Stars -->
                         @{
                             int _fullStars = 0;
 
-
-
                             bool _halfStar = false;
-
-
 
                             int _emptyStars = 5;
 
 
 
-
-
-
-
                             if (review.Rating.HasValue)
-
-
 
                             {
 
-
-
                                 _fullStars = (int)Math.Floor((double)(review.Rating.Value));
-
-
 
                                 _halfStar = review.Rating.Value % 1 >= 0.5;
 
-
-
                                 _emptyStars = 5 - _fullStars - (_halfStar ? 1 : 0);
-
-
 
                             }
 
 
 
-
-
-
-
                             for (int i = 0; i < _fullStars; i++)
-
-
 
                             {
                                 <i style="font-size: 1.2rem; color: #ffc107; margin-right: 3px;" class="fas fa-star"></i>
@@ -320,13 +238,7 @@
 
 
 
-
-
-
-
                             if (_halfStar)
-
-
 
                             {
                                 <i style="font-size: 1.2rem; color: #ffc107; margin-right: 3px;" class="fas fa-star-half-alt"></i>
@@ -334,42 +246,28 @@
 
 
 
-
-
-
-
                             for (int i = 0; i < _emptyStars; i++)
-
-
 
                             {
                                 <i style="font-size: 1.2rem; color: #ddd; margin-right: 3px;" class="far fa-star"></i>
                             }
                         }
 
-                        <!-- Render Comment -->
                         <br />
                         <br />
                         <strong>"</strong><em>@review.Comment</em><strong>"</strong><br />
                         <strong> -@review.User?.Name</strong>
-
                     </li>
                 }
             </ul>
         }
 
-
-
         else
-
-
 
         {
             <p style="color: #9DB2BF;">No reviews available.</p>
         }
     </div>
-
-
 </div>
 
 @section Styles {

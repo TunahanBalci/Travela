@@ -2,7 +2,9 @@
 
 @{
     ViewData["Title"] = "Preferences";
+
     var userPreferences = ViewBag.UserPreferences as IEnumerable<TravelApp.Models.Entities.Preference> ?? new List<TravelApp.Models.Entities.Preference>();
+
     var allPreferences = Model ?? new List<TravelApp.Models.Entities.Preference>();
 }
 
@@ -12,22 +14,24 @@
     <div class="container mt-5">
         <h1 class="mb-4">Manage Preferences</h1>
 
-        <!-- Feedback Section -->
         <div id="feedbackMessage" class="mb-4"></div>
 
         <div class="row">
-            <!-- User Preferences -->
             <div class="col-md-6">
                 <h3>Your Preferences</h3>
                 <div id="userPreferences">
                     @if (!userPreferences.Any())
+
                     {
                         <p class="alert alert-warning">You don't have any preferences yet.</p>
                     }
+
                     else
+
                     {
                         <ul class="list-group">
                             @foreach (var preference in userPreferences)
+
                             {
                                 <li class="list-group-item d-flex justify-content-between align-items-center" id="user-preference-@preference.ID">
                                     @preference.Content
@@ -39,65 +43,58 @@
                 </div>
             </div>
 
-            <!-- All Preferences -->
-<div class="col-md-6">
-    <h3>All Preferences</h3>
-    <div id="allPreferences">
-        @if (!allPreferences.Any())
-        {
-            <p class="alert alert-warning">No preferences available.</p>
-        }
-        else
-        {
-            <ul class="list-group">
-                @foreach (var preference in allPreferences)
-                {
-                    // Check if the preference is already in the user's preferences
-                    var isAdded = userPreferences.Any(up => up.ID == preference.ID);
+            <div class="col-md-6">
+                <h3>All Preferences</h3>
+                <div id="allPreferences">
+                    @if (!allPreferences.Any())
+
+                    {
+                        <p class="alert alert-warning">No preferences available.</p>
+                    }
+
+                    else
+
+                    {
+                        <ul class="list-group">
+                            @foreach (var preference in allPreferences)
+
+                            {
+
+                                var isAdded = userPreferences.Any(up => up.ID == preference.ID);
 
                                 <li class="list-group-item d-flex justify-content-between align-items-center" id="all-preference-@preference.ID">
                                     @preference.Content
-                                    <button type="button"
-                                            class="btn btn-sm @(isAdded ? "btn-secondary" : "btn-primary")"
-                                    @(isAdded ? "disabled" : "")
-                                            onclick="addPreference('@preference.ID')">
+                                    <button type="button" class="btn btn-sm @(isAdded ? "btn-secondary" : "btn-primary")" @(isAdded ? "disabled" : "") onclick="addPreference('@preference.ID')">
                                         @(isAdded ? "Added" : "Add")
                                     </button>
                                 </li>
-                }
-            </ul>
-        }
-    </div>
-</div>
-
-
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </form>
+
 <div class="text-center mt-4">
     <a href="Settings" class="btn btn-secondary">Return to Account Page</a>
 </div>
+
 @section Scripts {
     <script>
-
-        // Function to get the anti-forgery token
         function getAntiForgeryToken() {
             return document.querySelector('input[name="__RequestVerificationToken"]').value;
         }
 
-
-        let feedbackTimeout; // Declare a variable to track the timeout
+        let feedbackTimeout;
 
         function displayFeedback(message, type) {
             const feedbackDiv = document.getElementById('feedbackMessage');
             feedbackDiv.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
-
-            // Clear any existing timeout before setting a new one
             if (feedbackTimeout) {
                 clearTimeout(feedbackTimeout);
             }
-
-            // Set a new timeout to clear the message after 5 seconds
             feedbackTimeout = setTimeout(() => {
                 feedbackDiv.innerHTML = '';
             }, 5000);
@@ -106,7 +103,6 @@
         function updateEmptyState(listContainer, message) {
             const listGroup = listContainer.querySelector('.list-group');
             if (!listGroup || listGroup.children.length === 0) {
-                // If list is empty, show the empty state message
                 if (!listContainer.querySelector('.empty-state')) {
                     const emptyMessage = document.createElement('p');
                     emptyMessage.className = 'alert alert-warning empty-state';
@@ -114,7 +110,6 @@
                     listContainer.appendChild(emptyMessage);
                 }
             } else {
-                // If list is not empty, remove the empty state message
                 const emptyMessage = listContainer.querySelector('.empty-state');
                 if (emptyMessage) {
                     emptyMessage.remove();
@@ -126,15 +121,12 @@
             const addButton = document.querySelector(`#all-preference-${preferenceId} button`);
             const preferenceElement = document.querySelector(`#all-preference-${preferenceId}`);
             const preferenceContent = preferenceElement?.textContent.trim().replace('Add', '').trim();
-
             if (!preferenceContent) {
                 displayFeedback('An error occurred while adding the preference.', 'danger');
                 return;
             }
-
             addButton.disabled = true;
             addButton.textContent = 'Added';
-
             fetch('/Account/AddPreference', {
                 method: 'POST',
                 headers: {
@@ -146,30 +138,23 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Update the User Preferences list dynamically
                         const userPreferencesContainer = document.getElementById('userPreferences');
-
                         if (!userPreferencesContainer.querySelector('.list-group')) {
                             userPreferencesContainer.innerHTML = '<ul class="list-group"></ul>';
                         }
-
-                        // Check if preference already exists in user preferences before adding
                         if (!document.querySelector(`#user-preference-${preferenceId}`)) {
                             const newPreference = document.createElement('li');
                             newPreference.id = `user-preference-${preferenceId}`;
                             newPreference.className = 'list-group-item d-flex justify-content-between align-items-center';
                             newPreference.innerHTML = `
-                                ${preferenceContent}
-                                <button type="button" class="btn btn-sm btn-danger" onclick="removePreference('${preferenceId}', true)">Remove</button>
-                            `;
+                                    ${preferenceContent}
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="removePreference('${preferenceId}', true)">Remove</button>
+                                `;
                             userPreferencesContainer.querySelector('.list-group').appendChild(newPreference);
                         }
-
-                        // Update empty state
                         updateEmptyState(document.getElementById('userPreferences'), "You don't have any preferences yet.");
                         displayFeedback(data.message, 'success');
                     } else {
-                        // Revert button state on failure
                         addButton.disabled = false;
                         addButton.textContent = 'Add';
                         displayFeedback(data.message, 'danger');
@@ -182,18 +167,13 @@
                 });
         }
 
-
-
-
         function removePreference(preferenceId, isUserPreference) {
             const preferenceElement = document.querySelector(`#user-preference-${preferenceId}`);
             const preferenceContent = preferenceElement?.textContent.trim().replace('Remove', '').trim();
-
             if (!preferenceContent) {
                 displayFeedback('An error occurred while removing the preference.', 'danger');
                 return;
             }
-
             fetch('/Account/RemovePreference', {
                 method: 'POST',
                 headers: {
@@ -205,19 +185,14 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Remove from User Preferences list dynamically
                         preferenceElement.remove();
-
-                        // Update button state in All Preferences
                         const allPreferenceButton = document.querySelector(`#all-preference-${preferenceId} button`);
                         if (allPreferenceButton) {
                             allPreferenceButton.disabled = false;
                             allPreferenceButton.textContent = 'Add';
-                            allPreferenceButton.classList.remove('btn-secondary'); // Remove the gray style
-                            allPreferenceButton.classList.add('btn-primary'); // Add the blue style
+                            allPreferenceButton.classList.remove('btn-secondary');
+                            allPreferenceButton.classList.add('btn-primary');
                         }
-
-                        // Update empty state for User Preferences
                         updateEmptyState(document.getElementById('userPreferences'), "You don't have any preferences yet.");
                         displayFeedback(data.message, 'success');
                     } else {
@@ -230,5 +205,3 @@
         }
     </script>
 }
-
-

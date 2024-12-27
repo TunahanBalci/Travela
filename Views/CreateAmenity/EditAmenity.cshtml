@@ -18,7 +18,6 @@
     <div class="form-group">
         <label>Select Accommodations</label>
         @if (Model.Accommodations != null && Model.Accommodations.Any())
-
         {
             <div class="checkbox-group">
                 @foreach (var accommodation in Model.Accommodations)
@@ -36,9 +35,7 @@
                 }
             </div>
         }
-
         else
-
         {
             <p>No accommodations available.</p>
         }

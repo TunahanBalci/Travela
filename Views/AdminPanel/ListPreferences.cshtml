@@ -22,8 +22,6 @@
                 <td>@preference.Content</td>
                 <td>
                     <button class="btn btn-warning" onclick="navigateToEdit('@preference.ID')">Edit</button>
-
-
                     <form action="@Url.Action("DeletePreference", "AdminPanel", new { id = preference.ID })" method="post" style="display:inline;">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this preference?');">Delete</button>
@@ -33,11 +31,13 @@
         }
     </tbody>
 </table>
+
 <a href="@Url.Action("CreatePreference", "CreatePreference")" class="btn btn-primary">Add New Preference</a>
 <button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
+
 @section Scripts {
     <script>
-            function navigateToEdit(id) {
+        function navigateToEdit(id) {
             window.location.href = `/CreatePreference/EditPreference/${id}`;
         }
     </script>

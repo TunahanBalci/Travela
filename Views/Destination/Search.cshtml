@@ -10,23 +10,18 @@
     <p style="color: #526D82;" class="text-center mb-4">Results for: <strong style="color: #526D82;">@Model.Query</strong></p>
 
     @if (!Model.Destinations.Any() && !Model.Accommodations.Any())
-
     {
         <div class="alert alert-warning text-center" role="alert">
             <strong>No results found.</strong> Try searching for something else.
         </div>
     }
-
     else
-
     {
         @if (Model.Destinations.Any())
-
         {
             <h2 class="mt-4" style="color: #27374D;text-decoration:underline">Destinations</h2>
             <div class="row">
                 @foreach (var destination in Model.Destinations)
-
                 {
                     <div class="col-md-6 col-lg-4 mb-4">
                         <a asp-controller="Destination" asp-action="Details" asp-route-id="@destination.ID" class="text-decoration-none">
@@ -46,9 +41,7 @@
                 }
             </div>
         }
-
         @if (Model.Accommodations.Any())
-
         {
             <h2 class="mt-4" style="color: #27374D;text-decoration:underline">Accommodations</h2>
             <div class="row">

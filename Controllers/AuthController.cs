@@ -1,16 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TravelApp.Models.Entities;
-using TravelApp.Data;
-using TravelApp.Models.ViewModels;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using TravelApp.Data;
+using TravelApp.Models.Entities;
 
 namespace TravelApp.Controllers
 {
@@ -30,7 +23,6 @@ namespace TravelApp.Controllers
             return View();
         }
 
-
         public async Task<IActionResult> Register()
         {
             return View();
@@ -46,7 +38,6 @@ namespace TravelApp.Controllers
             }
 
             user.ID = Guid.NewGuid();
-
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -54,12 +45,10 @@ namespace TravelApp.Controllers
             return View();
         }
 
-
         public async Task<IActionResult> Login()
         {
             return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -72,7 +61,6 @@ namespace TravelApp.Controllers
                 return View();
             }
 
-            // Create user claims
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
@@ -83,13 +71,10 @@ namespace TravelApp.Controllers
             var identity = new ClaimsIdentity(claims, "CookieAuth");
             var principal = new ClaimsPrincipal(identity);
 
-            // Sign in the user
             await HttpContext.SignInAsync("CookieAuth", principal);
 
             return RedirectToAction("Index", "Home");
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -97,24 +82,16 @@ namespace TravelApp.Controllers
         {
             _logger.LogInformation("User initiated logout.");
 
-            // Sign out the user using the consistent scheme "CookieAuth"
             await HttpContext.SignOutAsync("CookieAuth");
 
             _logger.LogInformation("User successfully logged out.");
 
-            // Check if the request is an AJAX request
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
                 return Json(new { success = true });
             }
 
-            // For non-AJAX requests, redirect to Home
             return RedirectToAction("Index", "Home");
         }
-
-
-
-
     }
-
 }

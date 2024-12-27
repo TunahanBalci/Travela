@@ -26,15 +26,14 @@ namespace TravelApp.Models.ViewModels
         [Display(Name = "Is Admin")]
         public bool IsAdmin { get; set; }
 
-        // Preferences
+
         public List<SelectListItem> Preferences { get; set; } = new List<SelectListItem>();
         public List<Guid> SelectedPreferenceIds { get; set; } = new List<Guid>();
 
-        // Visited Destinations
+
         public List<SelectListItem> VisitedDestinations { get; set; } = new List<SelectListItem>();
         public List<Guid> SelectedVisitedDestinationIds { get; set; } = new List<Guid>();
 
-        // Favorite Destinations
         public List<SelectListItem> FavoriteDestinations { get; set; } = new List<SelectListItem>();
         public List<Guid> SelectedFavoriteDestinationIds { get; set; } = new List<Guid>();
     }

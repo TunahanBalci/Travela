@@ -6,13 +6,10 @@ using Microsoft.Extensions.Logging;
 using TravelApp.Data;
 using TravelApp.Models.Entities;
 using TravelApp.Models.ViewModels;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TravelApp.Controllers
 {
-    [Authorize] // Restricts access to users with the "Admin" role
+    [Authorize]
     public class CreateActivityController : Controller
     {
         private readonly AppDBContext _context;
@@ -24,12 +21,10 @@ namespace TravelApp.Controllers
             _logger = logger;
         }
 
-        // GET: CreateActivity/CreateActivity
         public async Task<IActionResult> CreateActivity()
         {
             try
             {
-                // Fetch all destinations and accommodations to populate the selection lists
                 var destinations = await _context.Destinations
                     .Select(d => new SelectListItem
                     {
@@ -52,13 +47,12 @@ namespace TravelApp.Controllers
                     Accommodations = accommodations
                 };
 
-                // Check if any destinations exist
                 if (!model.Destinations.Any())
                 {
                     ModelState.AddModelError("", "No destinations available. Please create a destination first.");
                 }
 
-                return View(model); // Pass the model to the view
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -67,8 +61,6 @@ namespace TravelApp.Controllers
             }
         }
 
-
-        // POST: CreateActivity/CreateActivity
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateActivity(CreateActivityViewModel model)
@@ -118,7 +110,6 @@ namespace TravelApp.Controllers
 
                 _context.Activities.Add(activity);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction("ListActivities", "AdminPanel");
             }
             catch (Exception ex)
@@ -145,7 +136,6 @@ namespace TravelApp.Controllers
                 return View(model);
             }
         }
-
 
         [HttpGet]
         [Route("CreateActivity/EditActivity/{id}")]
@@ -202,11 +192,8 @@ namespace TravelApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditActivity(Guid id, CreateActivityViewModel viewModel)
         {
-            _logger.LogInformation("EditActivity POST method called for Activity ID: {ID}", id);
-
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("ModelState is invalid. Reloading destinations and accommodations.");
                 viewModel.Destinations = await _context.Destinations
                     .Select(d => new SelectListItem
                     {
@@ -240,27 +227,23 @@ namespace TravelApp.Controllers
                     return View(viewModel);
                 }
 
-                _logger.LogInformation("Updating activity properties.");
                 existingActivity.Name = viewModel.Name;
                 existingActivity.Type = viewModel.Type;
                 existingActivity.Date = viewModel.Date;
                 existingActivity.Price = viewModel.Price;
                 existingActivity.Requires_Reservation = viewModel.Requires_Reservation;
 
-                _logger.LogInformation("Updating destinations.");
                 var selectedDestinations = await _context.Destinations
                     .Where(d => viewModel.DestinationIDs.Contains(d.ID))
                     .ToListAsync();
                 existingActivity.Destinations = selectedDestinations;
 
-                _logger.LogInformation("Updating accommodations.");
                 var selectedAccommodations = await _context.Accommodations
                     .Where(a => viewModel.AccommodationIDs.Contains(a.ID))
                     .ToListAsync();
                 existingActivity.Accommodations = selectedAccommodations;
 
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Activity updated successfully.");
                 return RedirectToAction("ListActivities", "AdminPanel");
             }
             catch (Exception ex)
@@ -287,8 +270,5 @@ namespace TravelApp.Controllers
                 return View(viewModel);
             }
         }
-
-
-
     }
 }

@@ -52,7 +52,7 @@ namespace TravelApp.Models.Entities
         public Guid DestinationID { get; set; }
 
         [Required]
-        public DateTime Visit_Date { get; set; } = DateTime.Now; // Default now
+        public DateTime Visit_Date { get; set; } = DateTime.Now; 
 
     }
 

@@ -19,10 +19,10 @@ namespace TravelApp.Models.Entities
         public string Description { get; set; }
 
         [Required]
-        public Guid CityID { get; set; } // Foreign Key
+        public Guid CityID { get; set; }
 
         [ForeignKey("CityID")]
-        [ValidateNever] // Prevent validation on the navigation property
+        [ValidateNever]
         public City City { get; set; }
 
         [Required]

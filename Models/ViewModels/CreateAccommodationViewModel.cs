@@ -7,7 +7,6 @@ namespace TravelApp.Models.ViewModels
 {
     public class CreateAccommodationViewModel
     {
-        // Accommodation ID (Required for Edit operations)
         public Guid ID { get; set; }
 
         [Required(ErrorMessage = "Accommodation name is required.")]
@@ -32,16 +31,13 @@ namespace TravelApp.Models.ViewModels
         [Required(ErrorMessage = "Please select a city.")]
         public Guid CityID { get; set; }
 
-        public string Image_Path { get; set; } = string.Empty; // New property for image path
+        public string Image_Path { get; set; } = string.Empty;
 
-        // List of all available cities
         public List<City> Cities { get; set; } = new List<City>();
 
-        // Properties for Activities and Amenities
         public List<Activity> Activities { get; set; } = new List<Activity>();
         public List<Amenity> Amenities { get; set; } = new List<Amenity>();
 
-        // Selected Activity and Amenity IDs
         public List<Guid> SelectedActivityIds { get; set; } = new List<Guid>();
         public List<Guid> SelectedAmenityIds { get; set; } = new List<Guid>();
     }

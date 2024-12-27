@@ -1,5 +1,4 @@
-﻿<!-- Views/Shared/_Layout.cshtml -->
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,10 +12,8 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid d-flex justify-content-between align-items-center">
-                <!-- Logo Section (Aligned to the Left) -->
                 <a style="margin-left:50px;font-size:32px;font-weight:bolder;color:#27374D;" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Travela</a>
 
-                <!-- Search Form (Centered) -->
                 <form style="max-width: 600px;" class="d-flex justify-content-center align-items-center w-100 mx-auto" method="get" asp-area="" asp-controller="Destination" asp-action="Search">
                     <div class="input-group" style="height: 50px;">
                         <input class="form-control" type="search" name="query" placeholder="Search destinations..." aria-label="Search" style="height: 50px; border-radius: 25px 0 0 25px; padding: 10px 20px; font-size: 1rem;" />
@@ -26,18 +23,15 @@
                     </div>
                 </form>
 
-                <!-- Navbar Links -->
                 <div class="d-flex align-items-center">
                     <ul class="navbar-nav ms-auto">
                         @if (User.Identity.IsAuthenticated && User.HasClaim(c => c.Type == "IsAdmin" && c.Value == "True"))
-
                         {
                             <li class="nav-item" style="margin-right:30px">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="AdminPanel" asp-action="List">Admin Panel</a>
                             </li>
                         }
                         @if (User.Identity.IsAuthenticated)
-
                         {
                             <li class="nav-item dropdown" style="margin-right:50px">
                                 <a class="nav-link dropdown-toggle text-dark" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,7 +42,6 @@
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Settings">Settings</a>
                                     </li>
                                     <li>
-                                        <!-- Logout Form -->
                                         <form id="logoutForm" asp-area="" asp-controller="Auth" asp-action="Logout" method="post" class="dropdown-item">
                                             @Html.AntiForgeryToken()
                                             <button type="submit" class="dropdown-item btn-logout" style="border: none; background: none; padding: 0; margin: 0; cursor: pointer;">
@@ -59,9 +52,7 @@
                                 </ul>
                             </li>
                         }
-
                         else
-
                         {
                             <li class="nav-item" style="margin-right:50px">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Sign In</a>
@@ -72,7 +63,6 @@
             </div>
         </nav>
     </header>
-
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -97,7 +87,7 @@
             const logoutForm = document.getElementById('logoutForm');
             if (logoutForm) {
                 logoutForm.addEventListener('submit', function(e) {
-                    e.preventDefault(); // Prevent the default form submission
+                    e.preventDefault(); 
 
                     const formData = new FormData(logoutForm);
                     const csrfToken = formData.get('__RequestVerificationToken');
@@ -106,7 +96,7 @@
                         method: 'POST',
                         headers: {
                             'RequestVerificationToken': csrfToken,
-                            'X-Requested-With': 'XMLHttpRequest' // Indicate AJAX request
+                            'X-Requested-With': 'XMLHttpRequest'
                         },
                         body: new URLSearchParams(formData).toString()
                     })
@@ -118,7 +108,6 @@
                         })
                         .then(data => {
                             if (data.success) {
-                                // Optionally, reload the page to update UI
                                 window.location.reload();
                             } else {
                                 alert('Logout failed.');
@@ -132,12 +121,8 @@
             }
         });
     </script>
-    <!-- Bootstrap CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap JS Bundle (includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Bootstrap Icons (Optional, for icons in toasts) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 }    @RenderSection("Styles", required: false)

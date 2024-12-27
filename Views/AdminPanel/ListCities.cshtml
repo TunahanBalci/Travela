@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<TravelApp.Models.Entities.City>
+
 <h2>List of Cities</h2>
 <table class="table table-bordered table-striped">
     <thead>
@@ -16,6 +17,7 @@
     </thead>
     <tbody>
         @foreach (var city in Model)
+
         {
             <tr>
                 <td>@city.ID</td>
@@ -66,15 +68,16 @@
         }
     </tbody>
 </table>
+
 <a href="@Url.Action("CreateCity", "CreateCity")" class="btn btn-primary">Add New City</a>
 <button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
+
 @section Scripts {
     <script>
         function navigateToEdit(id) {
             window.location.href = `/CreateCity/EditCity/${id}`;
         }
-    </script>
-    <script>
+
         function confirmDelete(cityName) {
             return confirm(`Are you sure you want to delete the city '${cityName}' and all its related entities? This action cannot be undone.`);
         }

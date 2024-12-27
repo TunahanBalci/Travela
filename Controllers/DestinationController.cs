@@ -18,7 +18,6 @@ namespace TravelApp.Controllers
             _logger = logger;
         }
 
-        // GET: Destination/Details/{id}
         public async Task<IActionResult> Details(Guid id)
         {
             var destination = await _context.Destinations
@@ -51,10 +50,9 @@ namespace TravelApp.Controllers
             }
 
             ViewBag.Visited = isVisited;
-            ViewBag.HasReviewed = hasReview; // Assign the ViewBag.HasReviewed explicitly
+            ViewBag.HasReviewed = hasReview;
             ViewBag.CanLeaveReview = isVisited && !hasReview;
             ViewBag.IsFavorited = isFavorited;
-
 
             return View(destination);
         }
@@ -86,7 +84,6 @@ namespace TravelApp.Controllers
         [HttpPost]
         public async Task<IActionResult> MarkAsVisited(Guid DestinationID)
         {
-
             var userIdClaim = User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdClaim == null)
@@ -114,7 +111,7 @@ namespace TravelApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitReview(Guid destinationId, int rating, string comment)
         {
-            var userIdClaim = User?.Claims?.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim = User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdClaim == null)
             {
@@ -123,7 +120,6 @@ namespace TravelApp.Controllers
 
             var userId = Guid.Parse(userIdClaim);
 
-            // Check if user has already reviewed
             var existingReview = await _context.Reviews
                 .FirstOrDefaultAsync(r => r.DestinationID == destinationId && r.UserID == userId);
 
@@ -133,7 +129,6 @@ namespace TravelApp.Controllers
                 return RedirectToAction("Details", "Destination", new { id = destinationId });
             }
 
-            // Create new review
             var review = new Review
             {
                 ID = Guid.NewGuid(),
@@ -157,7 +152,7 @@ namespace TravelApp.Controllers
             if (destinationId == Guid.Empty)
             {
                 TempData["FeedbackMessage"] = "Invalid destination ID.";
-                _logger.LogWarning($"Inıtial DestinationID is wrong: ID = {destinationId}");
+                _logger.LogWarning($"Initial DestinationID is wrong: ID = {destinationId}");
                 return RedirectToAction("Details", new { id = destinationId });
             }
 
@@ -170,15 +165,12 @@ namespace TravelApp.Controllers
 
             var userId = Guid.Parse(userIdClaim);
 
-            // Debugging: Log the incoming destinationId
-            Console.WriteLine($"Adding to favorites: Destination ID = {destinationId}");
-
             var destination = await _context.Destinations.FirstOrDefaultAsync(d => d.ID == destinationId);
 
             if (destination == null)
             {
                 TempData["FeedbackMessage"] = "Destination not found.";
-                _logger.LogWarning($"Destination not found: ID = {destination.ID}");
+                _logger.LogWarning($"Destination not found: ID = {destinationId}");
                 return RedirectToAction("Details", new { id = destinationId });
             }
 
@@ -244,8 +236,5 @@ namespace TravelApp.Controllers
 
             return RedirectToAction("Details", new { id = destinationId });
         }
-
-
-
     }
 }

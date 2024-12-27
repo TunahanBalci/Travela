@@ -17,7 +17,7 @@ namespace TravelApp.Models.Entities
         public int? Rating { get; set; }
 
         [Required(ErrorMessage = "User is required.")]
-        public Guid UserID { get; set; } // Foreign Key to User
+        public Guid UserID { get; set; }
 
         [ForeignKey("UserID")]
         [ValidateNever]
@@ -26,7 +26,6 @@ namespace TravelApp.Models.Entities
         [MaxLength(1000, ErrorMessage = "Comment cannot exceed 1000 characters.")]
         public string? Comment { get; set; }
 
-        // Foreign Keys for one-to-many relationships
         public Guid? DestinationID { get; set; }
 
         [ForeignKey("DestinationID")]
@@ -45,7 +44,6 @@ namespace TravelApp.Models.Entities
         [ValidateNever]
         public Activity? Activity { get; set; }
 
-        // Custom Validation to ensure only one entity association
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             int associationCount = 0;

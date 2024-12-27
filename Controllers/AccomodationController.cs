@@ -15,7 +15,6 @@ namespace TravelApp.Controllers
             _context = context;
         }
 
-        // GET: Accommodation/Details
         public IActionResult Details(Guid id)
         {
             var accommodation = _context.Accommodations
@@ -41,10 +40,7 @@ namespace TravelApp.Controllers
 
             var userId = Guid.Parse(userIdClaim);
 
-            // Check if user has reviewed
             var hasReview = _context.Reviews.Any(r => r.UserID == userId && r.AccommodationID == id);
-
-            // Check if user has an active booking
             var activeBooking = _context.Bookings
                 .FirstOrDefault(b => b.User.ID == userId && b.Accommodation.ID == id);
 
@@ -63,12 +59,11 @@ namespace TravelApp.Controllers
             return View(accommodation);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitReview(Guid accommodationId, int rating, string comment)
         {
-            var userIdClaim = User?.Claims?.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim = User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdClaim == null)
             {
@@ -106,7 +101,7 @@ namespace TravelApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MakeBooking(Guid accommodationId, DateTime startDate, int duration)
         {
-            var userIdClaim = User?.Claims?.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim = User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdClaim == null)
             {
@@ -133,23 +128,23 @@ namespace TravelApp.Controllers
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.ID == userId);
+
             var booking = new Booking
             {
                 ID = Guid.NewGuid(),
                 Accommodation = accommodation,
-                User = user, 
+                User = user,
                 Booking_Date = DateTime.Now,
                 Start_Date = startDate,
-                End_Date = startDate.AddDays(duration - 1) // Duration includes the start date
+                End_Date = startDate.AddDays(duration - 1)
             };
 
-            accommodation.Availability = false; // Set availability to false
+            accommodation.Availability = false;
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
             TempData["FeedbackMessage"] = "Booking made successfully!";
             return RedirectToAction("Details", "Accommodation", new { id = accommodationId });
         }
-
     }
 }

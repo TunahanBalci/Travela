@@ -53,15 +53,12 @@ namespace TravelApp.Controllers
                     case "Destination":
                         review.DestinationID = model.EntityID;
                         break;
-
                     case "Accommodation":
                         review.AccommodationID = model.EntityID;
                         break;
-
                     case "Activity":
                         review.ActivityID = model.EntityID;
                         break;
-
                     default:
                         throw new Exception("Invalid entity type.");
                 }
@@ -282,6 +279,5 @@ namespace TravelApp.Controllers
                 return StatusCode(500, "An error occurred while fetching entities.");
             }
         }
-
     }
 }

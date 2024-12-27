@@ -41,7 +41,6 @@ namespace TravelApp.Controllers
                 city.ID = Guid.NewGuid();
                 _context.Cities.Add(city);
                 _context.SaveChanges();
-
                 return RedirectToAction("ListCities", "AdminPanel");
             }
             catch (Exception ex)
@@ -66,14 +65,14 @@ namespace TravelApp.Controllers
                     return NotFound("City not found.");
                 }
 
-                var selectedActivityIds = city.Activities.Select(a => a.ID).ToList(); // Extract selected activity IDs
+                var selectedActivityIds = city.Activities.Select(a => a.ID).ToList();
 
                 var activities = await _context.Activities
                     .Select(a => new SelectListItem
                     {
                         Value = a.ID.ToString(),
                         Text = a.Name,
-                        Selected = selectedActivityIds.Contains(a.ID) // Perform the selection in memory
+                        Selected = selectedActivityIds.Contains(a.ID)
                     })
                     .ToListAsync();
 
@@ -117,7 +116,6 @@ namespace TravelApp.Controllers
                         Selected = viewModel.SelectedActivityIds.Contains(a.ID)
                     })
                     .ToListAsync();
-
                 return View(viewModel);
             }
 
@@ -132,14 +130,12 @@ namespace TravelApp.Controllers
                     return NotFound("City not found.");
                 }
 
-                // Update city fields
                 existingCity.Name = viewModel.Name;
                 existingCity.Location = viewModel.Location;
                 existingCity.Climate = viewModel.Climate;
                 existingCity.Terrain = viewModel.Terrain;
                 existingCity.Cost_Of_Living = viewModel.Cost_Of_Living;
 
-                // Update activities
                 var selectedActivities = await _context.Activities
                     .Where(a => viewModel.SelectedActivityIds.Contains(a.ID))
                     .ToListAsync();
@@ -151,7 +147,6 @@ namespace TravelApp.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction("ListCities", "AdminPanel");
             }
             catch (DbUpdateException dbEx)
@@ -167,7 +162,5 @@ namespace TravelApp.Controllers
                 return View(viewModel);
             }
         }
-
-
     }
 }

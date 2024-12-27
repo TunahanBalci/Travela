@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "kQPqNBgiw9DVy0A/7927qz2M3Qp4KYFZk0jD34/AFtg=",
+  "Hash": "mjQTY6vVjPX8fjjBzHcuHirYYqjV+X7OM/EVa8/MTHw=",
   "Source": "TravelApp",
   "BasePath": "_content/TravelApp",
   "Mode": "Default",
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "8u72c88q16",
-      "Integrity": "0L8h/SdgqK2D15PMSszD5yMsgcMEZtQF/RdUFO2xmaM=",
+      "Fingerprint": "zf8olh1wss",
+      "Integrity": "QZbsDjQukQDXTgIKcElGVCZ6ra2QoysGD4PtDZQaKJI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1447,51 +1447,6 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/site.8u72c88q16.css",
-      "AssetFile": "C:\\Users\\tunah\\source\\TravelApp\\wwwroot\\css\\site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1135"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"0L8h/SdgqK2D15PMSszD5yMsgcMEZtQF/RdUFO2xmaM=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 26 Dec 2024 01:25:42 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "8u72c88q16"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-0L8h/SdgqK2D15PMSszD5yMsgcMEZtQF/RdUFO2xmaM="
-        }
-      ]
-    },
-    {
       "Route": "css/site.css",
       "AssetFile": "C:\\Users\\tunah\\source\\TravelApp\\wwwroot\\css\\site.css",
       "Selectors": [],
@@ -1502,7 +1457,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1135"
+          "Value": "942"
         },
         {
           "Name": "Content-Type",
@@ -1510,11 +1465,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0L8h/SdgqK2D15PMSszD5yMsgcMEZtQF/RdUFO2xmaM=\""
+          "Value": "\"QZbsDjQukQDXTgIKcElGVCZ6ra2QoysGD4PtDZQaKJI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 26 Dec 2024 01:25:42 GMT"
+          "Value": "Fri, 27 Dec 2024 16:50:16 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1524,7 +1479,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-0L8h/SdgqK2D15PMSszD5yMsgcMEZtQF/RdUFO2xmaM="
+          "Value": "sha256-QZbsDjQukQDXTgIKcElGVCZ6ra2QoysGD4PtDZQaKJI="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.zf8olh1wss.css",
+      "AssetFile": "C:\\Users\\tunah\\source\\TravelApp\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "942"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"QZbsDjQukQDXTgIKcElGVCZ6ra2QoysGD4PtDZQaKJI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 27 Dec 2024 16:50:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zf8olh1wss"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-QZbsDjQukQDXTgIKcElGVCZ6ra2QoysGD4PtDZQaKJI="
         }
       ]
     },

@@ -5,23 +5,16 @@ namespace TravelApp.Data
 {
     public class AppDBContext : DbContext
     {
-        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
-        {
-        }
+        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
 
         public DbSet<Accommodation> Accommodations { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Booking> Bookings_History { get; set; }
-
-
         public DbSet<Activity> Activities { get; set; }
-
         public DbSet<City> Cities { get; set; }
         public DbSet<Destination> Destinations { get; set; }
-
         public DbSet<Review> Reviews { get; set; }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Visit> Visits { get; set; }
         public DbSet<Preference> Preferences { get; set; }
@@ -40,14 +33,12 @@ namespace TravelApp.Data
 
         private void UpdateAverageRatings()
         {
-            // Find all added or modified reviews
             var updatedReviews = ChangeTracker.Entries<Review>()
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
                 .Select(e => e.Entity);
 
             foreach (var review in updatedReviews)
             {
-                // Update Average_Rating for Destination
                 if (review.DestinationID.HasValue)
                 {
                     var destination = Destinations.Include(d => d.Reviews)
@@ -61,7 +52,6 @@ namespace TravelApp.Data
                     }
                 }
 
-                // Update Average_Rating for Accommodation
                 if (review.AccommodationID.HasValue)
                 {
                     var accommodation = Accommodations.Include(a => a.Reviews)
@@ -75,7 +65,6 @@ namespace TravelApp.Data
                     }
                 }
 
-                // Update Average_Rating for Activity
                 if (review.ActivityID.HasValue)
                 {
                     var activity = Activities.Include(a => a.Reviews)
@@ -90,9 +79,6 @@ namespace TravelApp.Data
                 }
             }
         }
-
-
-
 
         public async Task MoveExpiredBookingsToHistory()
         {
@@ -113,7 +99,6 @@ namespace TravelApp.Data
                 };
 
                 booking.Accommodation.Availability = true;
-
                 Bookings_History.Add(history);
                 Bookings.Remove(booking);
             }
@@ -121,21 +106,18 @@ namespace TravelApp.Data
             await SaveChangesAsync();
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Booking Check Constraint
+
             modelBuilder.Entity<Booking>(entity =>
             {
                 entity.ToTable(tb =>
                 {
-                    tb.HasCheckConstraint("CK_Booking_StartBeforeEnd", "Start_Date < End_Date"); // Correct column names
+                    tb.HasCheckConstraint("CK_Booking_StartBeforeEnd", "Start_Date < End_Date");
                 });
             });
 
-
-            // Accommodation-Activity Many-to-Many Relationship
             modelBuilder.Entity<Accommodation>()
                 .HasMany(a => a.Activities)
                 .WithMany(b => b.Accommodations)
@@ -145,29 +127,28 @@ namespace TravelApp.Data
                         .HasOne<Activity>()
                         .WithMany()
                         .HasForeignKey("ActivitiesID")
-                        .OnDelete(DeleteBehavior.NoAction), // Prevent cascading deletes on Activities
+                        .OnDelete(DeleteBehavior.NoAction),
                     j => j
                         .HasOne<Accommodation>()
                         .WithMany()
                         .HasForeignKey("AccommodationsID")
-                        .OnDelete(DeleteBehavior.Cascade) // Allow cascading deletes on Accommodations
+                        .OnDelete(DeleteBehavior.Cascade)
                 );
 
             modelBuilder.Entity<Visit>()
                 .HasKey(uth => new { uth.UserID, uth.DestinationID });
+
             modelBuilder.Entity<Destination>()
                 .HasOne(d => d.City)
                 .WithMany(c => c.Destinations)
                 .HasForeignKey(d => d.CityID)
-                .OnDelete(DeleteBehavior.Cascade); // Or another appropriate delete behavior
-
-            // Configure many-to-many: Review <-> Destination
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Review>()
-               .HasOne(r => r.Destination)
-               .WithMany(d => d.Reviews)
-               .HasForeignKey(r => r.DestinationID)
-               .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(r => r.Destination)
+                .WithMany(d => d.Reviews)
+                .HasForeignKey(r => r.DestinationID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Accommodation)

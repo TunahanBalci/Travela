@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TravelApp.Controllers
 {
-    [Authorize] // Ensure only admins can access these actions
+    [Authorize]
     public class CreatePreferenceController : Controller
     {
         private readonly AppDBContext _context;

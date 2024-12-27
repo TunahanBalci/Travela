@@ -12,10 +12,8 @@ namespace TravelApp.Models.ViewModels
         [MaxLength(100, ErrorMessage = "Amenity name cannot exceed 100 characters.")]
         public string Name { get; set; }
 
-        // List of all available accommodations to select from
         public List<Accommodation> Accommodations { get; set; } = new List<Accommodation>();
 
-        // List of selected accommodation IDs
         [Display(Name = "Select Accommodations")]
         public List<Guid> SelectedAccommodationIds { get; set; } = new List<Guid>();
     }

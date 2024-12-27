@@ -1,5 +1,4 @@
-﻿// TravelApp/Constants/AuthSchemes.cs
-namespace TravelApp.Utils
+﻿namespace TravelApp.Utils
 {
     public static class AuthSchemes
     {

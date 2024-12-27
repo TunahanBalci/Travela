@@ -7,7 +7,6 @@
 <div class="container mt-5">
     <h1 class="mb-4 text-center">My Favorited Destinations</h1>
 
-    <!-- Feedback Message Section -->
     <div id="feedbackMessage" class="text-center mb-4" style="display: none;">
         <div id="feedbackContent" class="alert" role="alert"></div>
     </div>
@@ -66,7 +65,6 @@
                                     </div>
                                 </div>
                             </a>
-                            <!-- Remove from Favorites Button -->
                             <div class="card-footer">
                                 <button class="btn btn-outline-danger btn-sm remove-favorite" data-id="@destination.ID">
                                     <i class="fas fa-heart-broken"></i> Remove from Favorites
@@ -99,7 +97,7 @@
                         headers: {
                             'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
                         },
-                        data: JSON.stringify({ DestinationId: destinationId }), // Ensure the property matches the DTO
+                        data: JSON.stringify({ DestinationId: destinationId }),
                         success: function(response) {
                             if (response.success) {
                                 button.closest('.col-md-4').remove();
@@ -112,7 +110,6 @@
                             showFeedback('danger', 'An error occurred while removing the destination from your favorites.');
                         }
                     });
-
                 });
             });
 
@@ -131,7 +128,7 @@
                         `<div class="mt-2">
                                     <button id="confirmYes" class="btn btn-success btn-sm">Yes</button>
                                     <button id="confirmNo" class="btn btn-secondary btn-sm">No</button>
-                                 </div>`
+                                </div>`
                     );
 
                     $('#confirmYes').click(function() {
@@ -153,7 +150,6 @@
 }
 
 @section Styles {
-    <!-- Font Awesome for star icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <style>

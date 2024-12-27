@@ -19,6 +19,7 @@ namespace TravelApp.Controllers
             _logger = logger;
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
             var userIdClaim = User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -39,7 +40,6 @@ namespace TravelApp.Controllers
                 return NotFound("User not found.");
             }
 
-            // Fetch and calculate priority for destinations
             var destinations = await _context.Destinations
                 .Include(d => d.Reviews)
                 .Include(d => d.City)
@@ -68,7 +68,6 @@ namespace TravelApp.Controllers
                 .Select(d => d.Destination)
                 .ToList();
 
-            // Fetch and calculate priority for accommodations
             var accommodations = await _context.Accommodations
                 .Include(a => a.City)
                 .Include(a => a.Amenities)
@@ -88,10 +87,8 @@ namespace TravelApp.Controllers
                 .Select(a => a.Accommodation)
                 .ToList();
 
-            // Gather favorited destinations
             var favoritedDestinationIds = user.Favorited.Select(f => f.ID.ToString()).ToList();
 
-            // Statistics for destinations by city
             var destinationStats = await _context.Destinations
                 .Include(d => d.City)
                 .GroupBy(d => d.City.Name)
@@ -102,7 +99,6 @@ namespace TravelApp.Controllers
                 })
                 .ToListAsync();
 
-            // Top users by number of reviews
             var topUsersByReviews = await _context.Users
                 .Select(u => new
                 {
@@ -113,7 +109,6 @@ namespace TravelApp.Controllers
                 .Take(10)
                 .ToListAsync();
 
-            // Destination average ratings
             var destinationRatings = await _context.Destinations
                 .Include(d => d.Reviews)
                 .Select(d => new
@@ -124,7 +119,6 @@ namespace TravelApp.Controllers
                 .OrderByDescending(d => d.AverageRating)
                 .ToListAsync();
 
-            // Average ratings by city
             var cityRatings = await _context.Destinations
                 .Include(d => d.City)
                 .GroupBy(d => d.City.Name)
@@ -136,7 +130,6 @@ namespace TravelApp.Controllers
                 .OrderByDescending(c => c.AverageRating)
                 .ToListAsync();
 
-            // Prepare ViewModel
             var viewModel = new HomeViewModel
             {
                 Destinations = topDestinations.Select(d => new DestinationViewModel
@@ -171,13 +164,8 @@ namespace TravelApp.Controllers
             ViewBag.DestinationStats = destinationStats;
             ViewBag.Cities = _context.Cities.Select(c => new { c.ID, c.Name }).ToList();
 
-
             return View(viewModel);
         }
-
-
-
-
 
         public IActionResult Details(Guid id)
         {

@@ -15,7 +15,6 @@
 }
 
 <div style="display: flex; flex-direction: row; margin-top: 50px;">
-    <!-- Image and Booking Info Section -->
     <div style="text-align: center; margin: 1rem 0;">
         <img src="@Model.Image_Path" alt="@Model.Name" onerror="this.onerror=null;this.src='/images/fallback_accommodation.png';"
              style="width: 500px; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
@@ -27,7 +26,6 @@
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="AccommodationID" value="@Model.ID" />
 
-                    <!-- Start Date -->
                     <div style="margin-bottom: 15px;">
                         <input type="date" id="startDate" name="startDate"
                                min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
@@ -37,7 +35,6 @@
                                title="Please select a valid date between today and the year 2100.">
                     </div>
 
-                    <!-- Duration -->
                     <div style="margin-bottom: 15px;">
                         <input type="number" id="duration" name="duration"
                                min="1" max="30"
@@ -79,7 +76,6 @@
                     <i class="fas fa-info-circle" style="margin-right: 5px;"></i> You have not reviewed this accommodation.
                 </div>
 
-                <!-- Review Form -->
                 <form asp-action="SubmitReview" asp-controller="Accommodation" method="post" style="margin-top: 15px;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="accommodationId" value="@Model.ID" />
@@ -106,7 +102,7 @@
                         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
                         resize: none;
                         transition: border-color 0.3s ease, box-shadow 0.3s ease;">
-                        </textarea>
+                            </textarea>
 
                     <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Submit</button>
                 </form>
@@ -119,12 +115,10 @@
         </div>
     </div>
 
-    <!-- Accommodation Details Section -->
     <div style="margin: 10px 25px 40px 25px; max-width: 600px;">
         <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;color:#27374D">@Model.Name</h1>
         <p style="color: #526D82; transform: translateY(-10px);">@Model.City?.Name, @Model.Location</p>
 
-        <!-- Star Ratings -->
         <div style="margin-bottom: 1rem;">
             @{
                 int fullStars = 0; bool halfStar = false; int emptyStars = 5;
@@ -171,17 +165,14 @@
             }
         </div>
 
-        <!-- Price -->
         <div style="margin-top: 20px;color:#526D82">
             <strong style="color:#526D82">Price:</strong> $@Model.Price / night
         </div>
 
-        <!-- Availability -->
         <div style="margin-top: 10px;color:#526D82">
             @(Model.Availability ? "Available for booking" : "Unavailable")
         </div>
 
-        <!-- Amenities Section -->
         <div style="margin-top: 50px; margin-bottom: 1rem;">
             <h4 style="color:#27374D">Amenities</h4>
             @if (Model.Amenities != null && Model.Amenities.Any())
@@ -202,127 +193,68 @@
         </div>
     </div>
 
-    <!-- Reviews Section -->
     <div style="margin: 1rem; flex: 1;">
         <h4 style="margin-bottom: 10px; text-decoration: underline;">Reviews</h4>
         @if (Model.Reviews != null && Model.Reviews.Any())
-
-
 
         {
             <ul style="list-style: none; padding: 0;">
                 @foreach (var review in Model.Reviews)
 
-
-
                 {
                     <li style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 10px 15px; margin-bottom: 10px; border-radius: 5px;">
-                        <!-- Render User Name -->
-                        <!-- Render Rating as Stars -->
                         @{
                             int _fullStars = 0;
 
-
-
                             bool _halfStar = false;
-
-
 
                             int _emptyStars = 5;
 
-
-
-
-
-
-
                             if (review.Rating.HasValue)
-
-
 
                             {
 
-
-
                                 _fullStars = (int)Math.Floor((double)(review.Rating.Value));
-
-
 
                                 _halfStar = review.Rating.Value % 1 >= 0.5;
 
-
-
                                 _emptyStars = 5 - _fullStars - (_halfStar ? 1 : 0);
-
-
 
                             }
 
-
-
-
-
-
-
                             for (int i = 0; i < _fullStars; i++)
-
-
 
                             {
                                 <i style="font-size: 1.2rem; color: #ffc107; margin-right: 3px;" class="fas fa-star"></i>
                             }
 
-
-
-
-
-
-
                             if (_halfStar)
-
-
 
                             {
                                 <i style="font-size: 1.2rem; color: #ffc107; margin-right: 3px;" class="fas fa-star-half-alt"></i>
                             }
 
-
-
-
-
-
-
                             for (int i = 0; i < _emptyStars; i++)
-
-
 
                             {
                                 <i style="font-size: 1.2rem; color: #ddd; margin-right: 3px;" class="far fa-star"></i>
                             }
                         }
-
-                        <!-- Render Comment -->
                         <br />
                         <br />
-                        <strong style="color:#526D82">"</strong><em style ="color:#526D82">@review.Comment</em><strong style="color:#526D82">"</strong><br />
+                        <strong style="color:#526D82">"</strong><em style="color:#526D82">@review.Comment</em><strong style="color:#526D82">"</strong><br />
                         <strong style="color:#27374D"> -@review.User?.Name</strong>
-
                     </li>
                 }
             </ul>
         }
 
-
-
         else
-
-
 
         {
             <p style="color: #9DB2BF;">No reviews available.</p>
         }
     </div>
-
 </div>
 
 @section Styles {

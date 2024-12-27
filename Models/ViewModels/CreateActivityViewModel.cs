@@ -27,14 +27,11 @@ namespace TravelApp.Models.ViewModels
         [Display(Name = "Requires Reservation")]
         public bool Requires_Reservation { get; set; }
 
-        //[Required(ErrorMessage = "At least one Destination is required.")]
         [Display(Name = "Destinations")]
         public List<Guid>? DestinationIDs { get; set; } = new List<Guid>();
 
-        // Dropdown Lists
         public List<SelectListItem> Destinations { get; set; } = new List<SelectListItem>();
 
-        // New properties for accommodations
         [Display(Name = "Accommodations")]
         public List<Guid>? AccommodationIDs { get; set; } = new List<Guid>();
 

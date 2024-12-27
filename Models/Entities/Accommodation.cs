@@ -31,10 +31,10 @@ namespace TravelApp.Models.Entities
         public bool Availability { get; set; } = true;
 
         [Required]
-        public Guid CityID { get; set; } // Foreign Key
+        public Guid CityID { get; set; }
 
         [ForeignKey("CityID")]
-        [ValidateNever] // Prevent validation on the navigation property
+        [ValidateNever]
         public City City { get; set; }
 
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
@@ -49,7 +49,7 @@ namespace TravelApp.Models.Entities
         public double? Average_Rating
         {
             get => _averageRating;
-            set => _averageRating = value; // Allow setting from code
+            set => _averageRating = value;
         }
     }
 

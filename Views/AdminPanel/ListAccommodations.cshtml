@@ -51,7 +51,7 @@
                 <td>
                     @if (accommodation.Average_Rating > 0)
                     {
-                        @accommodation.Average_Rating;
+                        @accommodation.Average_Rating
                     }
                     else
                     {
@@ -61,18 +61,16 @@
                 <td>@(accommodation.Availability ? "Yes" : "No")</td>
                 <td>
                     <button class="btn btn-warning" onclick="navigateToEdit('@accommodation.ID')">Edit</button>
-
-
                     <form action="@Url.Action("DeleteAccommodation", "AdminPanel", new { id = accommodation.ID })" method="post" style="display:inline;" onsubmit="return confirmDelete();">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
-
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
 <a href="@Url.Action("CreateAccommodation", "CreateAccommodation")" class="btn btn-primary">Add New Accommodation</a>
 <button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
 
@@ -80,14 +78,11 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         function navigateToEdit(id) {
-            // Redirect to the EditAccommodation action in the AdminPanel controller
             window.location.href = `/CreateAccommodation/EditAccommodation/${id}`;
         }
-    </script>
-    <script>
+
         function confirmDelete() {
             return confirm("Are you sure? Deleting this accommodation will also delete all related reviews.");
         }
     </script>
 }
-

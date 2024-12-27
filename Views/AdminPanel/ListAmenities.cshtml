@@ -12,6 +12,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Accommodations</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -33,8 +34,6 @@
                 </td>
                 <td>
                     <button class="btn btn-warning" onclick="navigateToEdit('@amenity.ID')">Edit</button>
-
-
                     <form action="@Url.Action("DeleteAmenity", "AdminPanel", new { id = amenity.ID })" method="post" style="display:inline;">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this amenity?');">Delete</button>
@@ -44,8 +43,10 @@
         }
     </tbody>
 </table>
+
 <a href="@Url.Action("CreateAmenity", "CreateAmenity")" class="btn btn-primary">Add New Amenity</a>
 <button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
+
 @section Scripts {
     <script>
         function navigateToEdit(id) {

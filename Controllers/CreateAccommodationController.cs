@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TravelApp.Data;
 using TravelApp.Models.Entities;
 using TravelApp.Models.ViewModels;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace TravelApp.Controllers
 {
@@ -23,7 +19,6 @@ namespace TravelApp.Controllers
             _logger = logger;
         }
 
-        // GET: CreateAccommodation/CreateAccommodation
         public async Task<IActionResult> CreateAccommodation()
         {
             try
@@ -55,7 +50,6 @@ namespace TravelApp.Controllers
             }
         }
 
-        // POST: CreateAccommodation/CreateAccommodation
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAccommodation(CreateAccommodationViewModel model)
@@ -79,28 +73,25 @@ namespace TravelApp.Controllers
                     Price = model.Price,
                     Availability = model.Availability,
                     CityID = model.CityID,
-                    Image_Path = $"/images/accommodations/{model.Name}.png" // Set Image_Path dynamically
+                    Image_Path = $"/images/accommodations/{model.Name}.png"
                 };
 
                 if (model.SelectedActivityIds != null && model.SelectedActivityIds.Any())
                 {
-                    var selectedActivities = await _context.Activities
+                    accommodation.Activities = await _context.Activities
                         .Where(a => model.SelectedActivityIds.Contains(a.ID))
                         .ToListAsync();
-                    accommodation.Activities = selectedActivities;
                 }
 
                 if (model.SelectedAmenityIds != null && model.SelectedAmenityIds.Any())
                 {
-                    var selectedAmenities = await _context.Amenities
+                    accommodation.Amenities = await _context.Amenities
                         .Where(a => model.SelectedAmenityIds.Contains(a.ID))
                         .ToListAsync();
-                    accommodation.Amenities = selectedAmenities;
                 }
 
                 _context.Accommodations.Add(accommodation);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction("ListAccommodations", "AdminPanel");
             }
             catch (Exception ex)
@@ -113,8 +104,6 @@ namespace TravelApp.Controllers
                 return View(model);
             }
         }
-
-
 
         [HttpGet]
         [Route("CreateAccommodation/EditAccommodation/{id}")]
@@ -142,7 +131,7 @@ namespace TravelApp.Controllers
                     Location = accommodation.Location,
                     Price = accommodation.Price,
                     Availability = accommodation.Availability,
-                    CityID = accommodation.City?.ID ?? Guid.Empty, // Handle null City
+                    CityID = accommodation.City?.ID ?? Guid.Empty,
                     SelectedActivityIds = accommodation.Activities?.Select(a => a.ID).ToList() ?? new List<Guid>(),
                     SelectedAmenityIds = accommodation.Amenities?.Select(a => a.ID).ToList() ?? new List<Guid>(),
                     Cities = await _context.Cities.ToListAsync(),
@@ -158,9 +147,6 @@ namespace TravelApp.Controllers
                 return StatusCode(500, "An unexpected error occurred. Please try again.");
             }
         }
-
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -187,31 +173,26 @@ namespace TravelApp.Controllers
                     return View(viewModel);
                 }
 
-                // Update fields
                 existingAccommodation.Name = viewModel.Name;
                 existingAccommodation.Type = viewModel.Type;
                 existingAccommodation.Location = viewModel.Location;
                 existingAccommodation.Price = viewModel.Price;
                 existingAccommodation.Availability = viewModel.Availability;
                 existingAccommodation.City = await _context.Cities.FindAsync(viewModel.CityID);
-                existingAccommodation.Image_Path = $"/images/accommodations/{viewModel.Name}.png"; // Set Image_Path dynamically
+                existingAccommodation.Image_Path = $"/images/accommodations/{viewModel.Name}.png";
 
-                // Update Activities
                 if (viewModel.SelectedActivityIds != null)
                 {
-                    var selectedActivities = await _context.Activities
+                    existingAccommodation.Activities = await _context.Activities
                         .Where(a => viewModel.SelectedActivityIds.Contains(a.ID))
                         .ToListAsync();
-                    existingAccommodation.Activities = selectedActivities;
                 }
 
-                // Update Amenities
                 if (viewModel.SelectedAmenityIds != null)
                 {
-                    var selectedAmenities = await _context.Amenities
+                    existingAccommodation.Amenities = await _context.Amenities
                         .Where(a => viewModel.SelectedAmenityIds.Contains(a.ID))
                         .ToListAsync();
-                    existingAccommodation.Amenities = selectedAmenities;
                 }
 
                 await _context.SaveChangesAsync();
@@ -233,6 +214,5 @@ namespace TravelApp.Controllers
             viewModel.Amenities = await _context.Amenities.ToListAsync();
             return View(viewModel);
         }
-
     }
 }

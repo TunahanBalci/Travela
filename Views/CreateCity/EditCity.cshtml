@@ -41,19 +41,15 @@
         <span asp-validation-for="Cost_Of_Living" class="text-danger"></span>
     </div>
 
-    <!-- Activities Selection -->
     <div class="form-group">
         <label>Activities</label>
         @if (Model.Activities != null && Model.Activities.Any())
 
         {
             <select asp-for="SelectedActivityIds" asp-items="Model.Activities" class="form-control" multiple>
-                <!-- Multiple selections allowed -->
             </select>
         }
-
         else
-
         {
             <p>No activities available.</p>
         }

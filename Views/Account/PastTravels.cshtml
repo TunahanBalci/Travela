@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "My Past Travels";
 
-
-
     var reviewedDestinations = ViewBag.ReviewedDestinations as List<Guid> ?? new List<Guid>();
 }
 
@@ -65,7 +63,6 @@
                                     </div>
                                 </div>
                             </a>
-                            <!-- Leave Review Button -->
                             @if (!reviewedDestinations.Contains(destination.ID))
                             {
                                 <div class="card-footer">
@@ -87,7 +84,6 @@
 </div>
 
 @section Styles {
-    <!-- Font Awesome for star icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <style>

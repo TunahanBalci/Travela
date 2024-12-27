@@ -29,7 +29,6 @@
         <div class="mb-3">
             <label for="Preferences" class="form-label">Select Preferences</label>
             <select asp-for="SelectedPreferenceIds" asp-items="Model.Preferences" class="form-control" multiple>
-                <!-- Multiple selections allowed -->
             </select>
             <span class="text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple preferences.</span>
             @Html.ValidationMessageFor(model => model.SelectedPreferenceIds, null, new { @class = "text-danger" })
