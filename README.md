@@ -82,7 +82,7 @@ Use SQL query to add an admin with the selected email.
 For this, replace admin@app.com with admin's email in database.
 
 ``` SQL Query
-  UPDATE Users
-  SET isAdmin = 1
-  WHERE email = 'admin@app.com';
+UPDATE Users
+SET isAdmin = 1
+WHERE email = 'admin@app.com';
 ```
