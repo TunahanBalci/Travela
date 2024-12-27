@@ -55,5 +55,7 @@ Travela is a dynamic web application built with ASP.NET Core 8.0 MVC that allows
 ## Setup Instructions
 
 1. **Download The Repository**
-2. **Configure AppSettings:**
- ``` "DatabaseConnection": "Server=YOUR_SERVER_NAME;Database=mainDB;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=True;"
+2. **Configure appsettings.json:**
+Replace YOUR_SERVER_NAME with your MSSQL Server name:
+ ``` "DatabaseConnection": "Server=YOUR_SERVER_NAME;Database=mainDB;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=True;" ```
+
