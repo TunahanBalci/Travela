@@ -72,7 +72,7 @@ update-database
 ```
 
 If migrations create errors, delete all migrations inside the Migrations folder.
-
+ 
 Then, add a new migration through package manager console.
 ```Package Manager Console
 add-migration migration_name 
