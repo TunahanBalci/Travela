@@ -1,4 +1,4 @@
-# Travel Explorer Web Application
+# Travel Web Application
 
 ## Overview
 
