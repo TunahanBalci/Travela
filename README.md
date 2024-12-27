@@ -58,14 +58,31 @@ Travela is a dynamic web application built with ASP.NET Core 8.0 MVC that allows
 2. **Configure appsettings.json:**
 Replace YOUR_SERVER_NAME with your MSSQL Server name:
 
- ``` "DatabaseConnection": "Server=YOUR_SERVER_NAME;Database=mainDB;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=True;" ```
+ ``` appsettings.json
+ "DatabaseConnection": "Server=YOUR_SERVER_NAME;Database=mainDB;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=True;" 
+```
 
 3. **Create Database Through Migrations**
 
 Delete all migrations inside the migrations folder.
-In the package manager console, use these commands:
+In the package manager console, use these commands in order:
 
 ```Package Manager Console
 add-migration migration_name 
+```
+```Package Manager Console
 update-database
+```
 
+4. **Add An Admin**
+
+Adding an admin is possible only through directly accessing the database.
+
+Use SQL query to add an admin with the selected email.
+For this, replace admin@app.com with admin's email in database.
+
+``` SQL Query
+  UPDATE Users
+  SET isAdmin = 1
+  WHERE email = 'admin@app.com';
+```
