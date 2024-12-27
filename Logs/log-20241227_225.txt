@@ -1,0 +1,48 @@
+2024-12-27 19:13:35.283 +03:00 [WRN] There are multiple relationships between 'Destination' and 'User' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Destination' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-12-27 19:13:35.415 +03:00 [WRN] The foreign key property 'Destination.UserID1' was created in shadow state because a conflicting property with the simple name 'UserID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-12-27 19:13:35.440 +03:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Accommodation'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 19:13:35.445 +03:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Activity'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 19:13:35.447 +03:00 [WRN] No store type was specified for the decimal property 'Cost_Of_Living' on entity type 'City'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 19:13:35.815 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-12-27 19:13:36.164 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-12-27 19:13:39.536 +03:00 [INF] Accessing Settings page
+2024-12-27 19:13:39.559 +03:00 [INF] User settings successfully retrieved for Email: new@gmail.com
+2024-12-27 19:13:43.871 +03:00 [INF] Accessing Settings page
+2024-12-27 19:13:43.878 +03:00 [INF] User settings successfully retrieved for Email: new@gmail.com
+2024-12-27 19:13:46.812 +03:00 [INF] RemovePreference: Preference successfully removed from user. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+2024-12-27 19:13:48.038 +03:00 [INF] AddPreference: Preference successfully added. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+2024-12-27 19:13:49.969 +03:00 [INF] Accessing Settings page
+2024-12-27 19:13:49.973 +03:00 [INF] User settings successfully retrieved for Email: new@gmail.com
+2024-12-27 19:13:55.644 +03:00 [INF] RemovePreference: Preference successfully removed from user. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+2024-12-27 19:13:56.518 +03:00 [INF] AddPreference: Preference successfully added. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+2024-12-27 19:13:58.103 +03:00 [INF] Accessing Settings page
+2024-12-27 19:13:58.107 +03:00 [INF] User settings successfully retrieved for Email: new@gmail.com
+2024-12-27 19:14:00.135 +03:00 [INF] RemovePreference: Preference successfully removed from user. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+2024-12-27 19:14:01.539 +03:00 [INF] AddPreference: Preference successfully added. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+2024-12-27 19:14:03.342 +03:00 [INF] Accessing Settings page
+2024-12-27 19:14:03.347 +03:00 [INF] User settings successfully retrieved for Email: new@gmail.com
+2024-12-27 19:14:04.916 +03:00 [INF] Accessing Settings page
+2024-12-27 19:14:04.919 +03:00 [INF] User settings successfully retrieved for Email: new@gmail.com
+2024-12-27 19:14:10.905 +03:00 [INF] User initiated logout.
+2024-12-27 19:14:10.909 +03:00 [INF] User successfully logged out.
+2024-12-27 19:14:31.039 +03:00 [INF] Accessing Settings page
+2024-12-27 19:14:31.044 +03:00 [INF] User settings successfully retrieved for Email: asd@asd
+[2024-12-27 19:18:05 WRN] There are multiple relationships between 'Destination' and 'User' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Destination' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+[2024-12-27 19:18:05 WRN] The foreign key property 'Destination.UserID1' was created in shadow state because a conflicting property with the simple name 'UserID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+[2024-12-27 19:18:05 WRN] No store type was specified for the decimal property 'Price' on entity type 'Accommodation'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 19:18:05 WRN] No store type was specified for the decimal property 'Price' on entity type 'Activity'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 19:18:05 WRN] No store type was specified for the decimal property 'Cost_Of_Living' on entity type 'City'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 19:18:07 INF] Accessing Settings page
+[2024-12-27 19:18:07 INF] User settings successfully retrieved for Email: asd@asd
+[2024-12-27 19:18:17 INF] User initiated logout.
+[2024-12-27 19:18:17 INF] User successfully logged out.
+[2024-12-27 19:18:59 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 19:18:59 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 19:19:01 INF] Accessing Settings page
+[2024-12-27 19:19:01 INF] User settings successfully retrieved for Email: tunah22a11sn@gmail.com
+[2024-12-27 19:19:03 INF] Accessing Settings page
+[2024-12-27 19:19:03 INF] User settings successfully retrieved for Email: tunah22a11sn@gmail.com
+[2024-12-27 19:19:38 INF] Accessing Settings page
+[2024-12-27 19:19:38 INF] User settings successfully retrieved for Email: tunah22a11sn@gmail.com
+[2024-12-27 19:19:39 INF] Accessing Settings page
+[2024-12-27 19:19:39 INF] User settings successfully retrieved for Email: tunah22a11sn@gmail.com

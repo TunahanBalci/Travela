@@ -227,7 +227,7 @@ namespace TravelApp.Controllers
 
             if (userIdClaim == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Auth");
             }
 
             var userId = Guid.Parse(userIdClaim);
@@ -237,14 +237,12 @@ namespace TravelApp.Controllers
 
             if (user == null)
             {
-                _logger.LogWarning("User not found in database. ID: {ID}", userId);
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Auth");
             }
 
-            var allPreferences = await _context.Preferences
-                .Where(p => !user.Preferences.Contains(p))
-                .ToListAsync();
+            var allPreferences = await _context.Preferences.ToListAsync();
 
+            // Pass both allPreferences and userPreferences to the view
             ViewBag.UserPreferences = user.Preferences ?? new List<Preference>();
             return View(allPreferences);
         }
@@ -297,9 +295,9 @@ namespace TravelApp.Controllers
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("AddPreference: Preference successfully added. PreferenceID: {PreferenceID}", request.PreferenceId);
             return Json(new { success = true, message = "Preference added successfully." });
         }
+
 
         /// <summary>
         /// Removes a preference from the user's preferences.

@@ -599,3 +599,4 @@ C:\Users\pc\Desktop\TravelApp-master\obj\Debug\net8.0\ref\TravelApp.dll
 C:\Users\tunah\source\TravelApp\bin\Debug\net8.0\TravelApp.staticwebassets.endpoints.json
 C:\Users\tunah\source\TravelApp\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\tunah\source\TravelApp\obj\Debug\net8.0\staticwebassets\msbuild.TravelApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\tunah\source\TravelApp\obj\Debug\net8.0\TravelApp.sourcelink.json

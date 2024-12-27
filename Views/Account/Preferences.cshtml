@@ -40,27 +40,37 @@
             </div>
 
             <!-- All Preferences -->
-            <div class="col-md-6">
-                <h3>All Preferences</h3>
-                <div id="allPreferences">
-                    @if (!allPreferences.Any())
-                    {
-                        <p class="alert alert-warning">No preferences available.</p>
-                    }
-                    else
-                    {
-                        <ul class="list-group">
-                            @foreach (var preference in allPreferences)
-                            {
+<div class="col-md-6">
+    <h3>All Preferences</h3>
+    <div id="allPreferences">
+        @if (!allPreferences.Any())
+        {
+            <p class="alert alert-warning">No preferences available.</p>
+        }
+        else
+        {
+            <ul class="list-group">
+                @foreach (var preference in allPreferences)
+                {
+                    // Check if the preference is already in the user's preferences
+                    var isAdded = userPreferences.Any(up => up.ID == preference.ID);
+
                                 <li class="list-group-item d-flex justify-content-between align-items-center" id="all-preference-@preference.ID">
                                     @preference.Content
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="addPreference('@preference.ID')">Add</button>
+                                    <button type="button"
+                                            class="btn btn-sm @(isAdded ? "btn-secondary" : "btn-primary")"
+                                    @(isAdded ? "disabled" : "")
+                                            onclick="addPreference('@preference.ID')">
+                                        @(isAdded ? "Added" : "Add")
+                                    </button>
                                 </li>
-                            }
-                        </ul>
-                    }
-                </div>
-            </div>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+
         </div>
     </div>
 </form>
@@ -113,13 +123,17 @@
         }
 
         function addPreference(preferenceId) {
-            const preferenceElement = document.getElementById(`all-preference-${preferenceId}`);
+            const addButton = document.querySelector(`#all-preference-${preferenceId} button`);
+            const preferenceElement = document.querySelector(`#all-preference-${preferenceId}`);
             const preferenceContent = preferenceElement?.textContent.trim().replace('Add', '').trim();
 
             if (!preferenceContent) {
                 displayFeedback('An error occurred while adding the preference.', 'danger');
                 return;
             }
+
+            addButton.disabled = true;
+            addButton.textContent = 'Added';
 
             fetch('/Account/AddPreference', {
                 method: 'POST',
@@ -132,34 +146,47 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        preferenceElement?.remove();
-
+                        // Update the User Preferences list dynamically
                         const userPreferencesContainer = document.getElementById('userPreferences');
-                        const newPreference = document.createElement('li');
-                        newPreference.id = `user-preference-${preferenceId}`;
-                        newPreference.className = 'list-group-item d-flex justify-content-between align-items-center';
-                        newPreference.innerHTML = `
-                            ${preferenceContent}
-                            <button type="button" class="btn btn-sm btn-danger" onclick="removePreference('${preferenceId}', true)">Remove</button>
-                        `;
 
                         if (!userPreferencesContainer.querySelector('.list-group')) {
                             userPreferencesContainer.innerHTML = '<ul class="list-group"></ul>';
                         }
-                        userPreferencesContainer.querySelector('.list-group').appendChild(newPreference);
 
-                        updateEmptyState(document.getElementById('allPreferences'), 'No preferences available.');
+                        // Check if preference already exists in user preferences before adding
+                        if (!document.querySelector(`#user-preference-${preferenceId}`)) {
+                            const newPreference = document.createElement('li');
+                            newPreference.id = `user-preference-${preferenceId}`;
+                            newPreference.className = 'list-group-item d-flex justify-content-between align-items-center';
+                            newPreference.innerHTML = `
+                                ${preferenceContent}
+                                <button type="button" class="btn btn-sm btn-danger" onclick="removePreference('${preferenceId}', true)">Remove</button>
+                            `;
+                            userPreferencesContainer.querySelector('.list-group').appendChild(newPreference);
+                        }
+
+                        // Update empty state
                         updateEmptyState(document.getElementById('userPreferences'), "You don't have any preferences yet.");
+                        displayFeedback(data.message, 'success');
+                    } else {
+                        // Revert button state on failure
+                        addButton.disabled = false;
+                        addButton.textContent = 'Add';
+                        displayFeedback(data.message, 'danger');
                     }
-                    displayFeedback(data.message, data.success ? 'success' : 'danger');
                 })
                 .catch(() => {
+                    addButton.disabled = false;
+                    addButton.textContent = 'Add';
                     displayFeedback('An error occurred. Please try again later.', 'danger');
                 });
         }
 
+
+
+
         function removePreference(preferenceId, isUserPreference) {
-            const preferenceElement = document.getElementById(`user-preference-${preferenceId}`);
+            const preferenceElement = document.querySelector(`#user-preference-${preferenceId}`);
             const preferenceContent = preferenceElement?.textContent.trim().replace('Remove', '').trim();
 
             if (!preferenceContent) {
@@ -173,39 +200,34 @@
                     'Content-Type': 'application/json',
                     'RequestVerificationToken': getAntiForgeryToken()
                 },
-                body: JSON.stringify({ preferenceId, isUserPreference })
+                body: JSON.stringify({ preferenceId })
             })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        preferenceElement?.remove();
+                        // Remove from User Preferences list dynamically
+                        preferenceElement.remove();
 
-                        const allPreferencesContainer = document.getElementById('allPreferences');
-                        const newPreference = document.createElement('li');
-                        newPreference.id = `all-preference-${preferenceId}`;
-                        newPreference.className = 'list-group-item d-flex justify-content-between align-items-center';
-                        newPreference.innerHTML = `
-                            ${preferenceContent}
-                            <button type="button" class="btn btn-sm btn-primary" onclick="addPreference('${preferenceId}')">Add</button>
-                        `;
-
-                        if (!allPreferencesContainer.querySelector('.list-group')) {
-                            allPreferencesContainer.innerHTML = '<ul class="list-group"></ul>';
+                        // Update button state in All Preferences
+                        const allPreferenceButton = document.querySelector(`#all-preference-${preferenceId} button`);
+                        if (allPreferenceButton) {
+                            allPreferenceButton.disabled = false;
+                            allPreferenceButton.textContent = 'Add';
+                            allPreferenceButton.classList.remove('btn-secondary'); // Remove the gray style
+                            allPreferenceButton.classList.add('btn-primary'); // Add the blue style
                         }
-                        allPreferencesContainer.querySelector('.list-group').appendChild(newPreference);
 
+                        // Update empty state for User Preferences
                         updateEmptyState(document.getElementById('userPreferences'), "You don't have any preferences yet.");
-                        updateEmptyState(document.getElementById('allPreferences'), 'No preferences available.');
+                        displayFeedback(data.message, 'success');
+                    } else {
+                        displayFeedback(data.message, 'danger');
                     }
-                    displayFeedback(data.message, data.success ? 'success' : 'danger');
                 })
                 .catch(() => {
                     displayFeedback('An error occurred. Please try again later.', 'danger');
                 });
         }
-
-
-
     </script>
 }
 
