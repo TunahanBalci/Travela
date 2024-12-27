@@ -57,5 +57,15 @@ Travela is a dynamic web application built with ASP.NET Core 8.0 MVC that allows
 1. **Download The Repository**
 2. **Configure appsettings.json:**
 Replace YOUR_SERVER_NAME with your MSSQL Server name:
+
  ``` "DatabaseConnection": "Server=YOUR_SERVER_NAME;Database=mainDB;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=True;" ```
+
+3. **Create Database Through Migrations**
+
+Delete all migrations inside the migrations folder.
+In the package manager console, use these commands:
+
+```Package Manager Console
+add-migration migration_name 
+update-database
 
