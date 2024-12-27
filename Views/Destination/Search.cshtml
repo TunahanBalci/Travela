@@ -1,0 +1,100 @@
+﻿@model TravelApp.Models.ViewModels.SearchResultsViewModel
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4" style="font-size:50px;color: #27374D; font-weight: bold;">Search Results</h1>
+
+    <p style="color: #526D82;" class="text-center mb-4">Results for: <strong style="color: #526D82;">@Model.Query</strong></p>
+
+    @if (!Model.Destinations.Any() && !Model.Accommodations.Any())
+
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            <strong>No results found.</strong> Try searching for something else.
+        </div>
+    }
+
+    else
+
+    {
+        @if (Model.Destinations.Any())
+
+        {
+            <h2 class="mt-4" style="color: #27374D;text-decoration:underline">Destinations</h2>
+            <div class="row">
+                @foreach (var destination in Model.Destinations)
+
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <a asp-controller="Destination" asp-action="Details" asp-route-id="@destination.ID" class="text-decoration-none">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="color: #27374D; font-weight: bold;">
+                                        @destination.Name
+                                    </h5>
+                                    <p class="card-text text-muted">@destination.Description</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">@destination.City.Name, @destination.Location</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+
+        @if (Model.Accommodations.Any())
+
+        {
+            <h2 class="mt-4" style="color: #27374D;text-decoration:underline">Accommodations</h2>
+            <div class="row">
+                @foreach (var accommodation in Model.Accommodations)
+
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <a asp-controller="Accommodation" asp-action="Details" asp-route-id="@accommodation.ID" class="text-decoration-none">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="color: #27374D; font-weight: bold;">@accommodation.Name</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted"><strong>Type:</strong> @accommodation.Type</small>
+                                    </p>
+                                    <p class="card-text">
+                                        <small class="text-muted"><strong>Location:</strong> @accommodation.Location</small>
+                                    </p>
+                                    <p class="card-text">
+                                        <small class="text-muted"><strong>Price:</strong> @accommodation.Price:C</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>
+
+<style>
+    .card {
+        border: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+    .card-title {
+        margin-bottom: 1rem;
+    }
+
+    a.text-decoration-none:hover .card-title {
+        text-decoration: underline;
+    }
+</style>

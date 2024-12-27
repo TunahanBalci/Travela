@@ -1,0 +1,56 @@
+﻿@model TravelApp.Models.ViewModels.CreateAmenityViewModel
+
+@{
+    ViewBag.Title = "Create Amenity";
+}
+
+<h2>Create Amenity</h2>
+
+<form asp-action="CreateAmenity" asp-controller="CreateAmenity" method="post">
+    @* Display Validation Summary *@
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 40px; margin-top: 50px; margin-bottom: 40px">
+        <!-- Name Field -->
+        <div>
+            <label for="Name">Name</label>
+            <input type="text" name="Name" id="Name" class="form-control" required />
+            @Html.ValidationMessageFor(model => model.Name, "Amenity name cannot be null.")
+        </div>
+
+        <!-- Accommodations Selection -->
+        <div>
+            <label>Select Accommodations</label>
+            @if (Model.Accommodations != null && Model.Accommodations.Any())
+            {
+                <div class="form-check">
+                    @foreach (var accommodation in Model.Accommodations)
+                    {
+                        <div>
+                            <input type="checkbox"
+                                   name="SelectedAccommodationIds"
+                                   id="accommodation_@accommodation.ID"
+                                   value="@accommodation.ID"
+                                   class="form-check-input"
+                            @(Model.SelectedAccommodationIds.Contains(accommodation.ID) ? "checked" : "") />
+                            <label class="form-check-label" for="accommodation_@accommodation.ID">@accommodation.Name</label>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No accommodations available.</p>
+            }
+            @Html.ValidationMessageFor(model => model.SelectedAccommodationIds, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <button type="submit" class="btn btn-success">Create</button>
+    <button type="button" onclick="location.href='@Url.Action("ListAmenities", "AdminPanel")'" class="btn btn-secondary">Return</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

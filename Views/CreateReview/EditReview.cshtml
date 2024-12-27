@@ -1,0 +1,39 @@
+﻿@model TravelApp.Models.ViewModels.CreateReviewViewModel
+
+@{
+    ViewData["Title"] = "Edit Review";
+}
+
+<h2>Edit Review</h2>
+
+<form asp-action="EditReview" asp-controller="CreateReview" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="EntityType" />
+    <input type="hidden" asp-for="EntityID" />
+
+    <div class="form-group">
+        <label asp-for="Rating"></label>
+        <input asp-for="Rating" type="number" class="form-control" min="0" max="5" />
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Comment"></label>
+        <textarea asp-for="Comment" class="form-control"></textarea>
+        <span asp-validation-for="Comment" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UserID">User</label>
+        <select asp-for="UserID" asp-items="Model.Users" class="form-control"></select>
+        <span asp-validation-for="UserID" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <button type="button" onclick="location.href='@Url.Action("ListReviews", "AdminPanel")'" class="btn btn-secondary">Cancel</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

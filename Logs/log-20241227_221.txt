@@ -1,0 +1,77 @@
+2024-12-27 08:00:02.359 +03:00 [WRN] There are multiple relationships between 'Destination' and 'User' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Destination' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-12-27 08:00:02.477 +03:00 [WRN] The foreign key property 'Destination.UserID1' was created in shadow state because a conflicting property with the simple name 'UserID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-12-27 08:00:02.503 +03:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Accommodation'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 08:00:02.507 +03:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Activity'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 08:00:02.510 +03:00 [WRN] No store type was specified for the decimal property 'Cost_Of_Living' on entity type 'City'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 08:00:03.072 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-12-27 08:00:03.152 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-12-27 08:00:07.245 +03:00 [INF] User initiated logout.
+2024-12-27 08:00:07.248 +03:00 [INF] User successfully logged out.
+[2024-12-27 08:02:11 WRN] There are multiple relationships between 'Destination' and 'User' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Destination' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+[2024-12-27 08:02:11 WRN] The foreign key property 'Destination.UserID1' was created in shadow state because a conflicting property with the simple name 'UserID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+[2024-12-27 08:02:11 WRN] No store type was specified for the decimal property 'Price' on entity type 'Accommodation'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 08:02:11 WRN] No store type was specified for the decimal property 'Price' on entity type 'Activity'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 08:02:11 WRN] No store type was specified for the decimal property 'Cost_Of_Living' on entity type 'City'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 08:02:12 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:02:12 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:02:16 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:02:31 INF] Accessing Settings page
+[2024-12-27 08:02:31 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:02:37 INF] Accessing Settings page
+[2024-12-27 08:02:37 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:02:37 INF] FavoritedDestinations action invoked.
+[2024-12-27 08:02:37 INF] Retrieved user: TestUser
+[2024-12-27 08:02:37 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:02:37 INF] FavoritedDestinations: Retrieved 1 favorited destinations for user with ID: "68522324-422d-451d-bfec-1ce6b1ccb0a3"
+[2024-12-27 08:02:40 INF] RemoveFavoritedDestination request received for DestinationID: "a541c031-03e4-4b45-9c9a-093ac9946d4c"
+[2024-12-27 08:02:40 INF] Retrieved user: TestUser
+[2024-12-27 08:02:40 INF] RemoveFavoritedDestination: Destination removed from user's favorites. DestinationID: "a541c031-03e4-4b45-9c9a-093ac9946d4c"
+[2024-12-27 08:02:42 INF] Accessing Settings page
+[2024-12-27 08:02:42 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:02:43 INF] AddPreference: Preference successfully added. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+[2024-12-27 08:02:45 INF] Accessing Settings page
+[2024-12-27 08:02:45 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:03:36 INF] User initiated logout.
+[2024-12-27 08:03:36 INF] User successfully logged out.
+[2024-12-27 08:04:26 INF] Accessing Settings page
+[2024-12-27 08:04:26 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:04:27 INF] FavoritedDestinations action invoked.
+[2024-12-27 08:04:27 INF] Retrieved user: TestUser
+[2024-12-27 08:04:27 INF] FavoritedDestinations: Retrieved 1 favorited destinations for user with ID: "68522324-422d-451d-bfec-1ce6b1ccb0a3"
+[2024-12-27 08:04:31 INF] RemoveFavoritedDestination request received for DestinationID: "ddeb38fa-0c88-4f8a-9545-e6c332e6d0ea"
+[2024-12-27 08:04:31 INF] Retrieved user: TestUser
+[2024-12-27 08:04:31 INF] RemoveFavoritedDestination: Destination removed from user's favorites. DestinationID: "ddeb38fa-0c88-4f8a-9545-e6c332e6d0ea"
+[2024-12-27 08:04:33 INF] Accessing Settings page
+[2024-12-27 08:04:33 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:04:39 INF] Accessing Settings page
+[2024-12-27 08:04:39 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:04:42 INF] RemovePreference: Preference successfully removed from user. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+[2024-12-27 08:04:43 INF] AddPreference: Preference successfully added. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+[2024-12-27 08:04:44 INF] Accessing Settings page
+[2024-12-27 08:04:44 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:04:47 INF] Accessing Settings page
+[2024-12-27 08:04:47 INF] User settings successfully retrieved for Email: test@test
+[2024-12-27 08:04:51 INF] UpdateEmail request received with value: test@testss
+[2024-12-27 08:04:51 INF] Retrieved user: TestUser
+[2024-12-27 08:04:51 INF] Updating email for user with current Email: test@test
+[2024-12-27 08:04:51 INF] Email successfully updated for user with Email: test@testss
+[2024-12-27 08:04:51 ERR] An error occurred while updating the user's email.
+System.InvalidOperationException: No sign-in authentication handler is registered for the scheme 'Cookies'. The registered sign-in schemes are: CookieAuth. Did you forget to call AddAuthentication().AddCookie("Cookies",...)?
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.SignInAsync(HttpContext context, String scheme, ClaimsPrincipal principal, AuthenticationProperties properties)
+   at TravelApp.Controllers.AccountController.UpdateEmail(UpdateRequest request) in C:\Users\tunah\source\TravelApp\Controllers\AccountController.cs:line 162
+[2024-12-27 08:04:53 INF] UpdateEmail request received with value: test@testss
+[2024-12-27 08:04:53 WRN] GetCurrentUser could not find a user with Email: test@test
+[2024-12-27 08:04:53 INF] Retrieved user: null
+[2024-12-27 08:04:53 WRN] Unauthorized attempt to update email.
+[2024-12-27 08:04:54 INF] UpdateEmail request received with value: test@testss
+[2024-12-27 08:04:54 WRN] GetCurrentUser could not find a user with Email: test@test
+[2024-12-27 08:04:54 INF] Retrieved user: null
+[2024-12-27 08:04:54 WRN] Unauthorized attempt to update email.
+[2024-12-27 08:04:57 INF] UpdateName request received with value: TestUsers
+[2024-12-27 08:04:57 WRN] GetCurrentUser could not find a user with Email: test@test
+[2024-12-27 08:04:57 INF] Retrieved user: null
+[2024-12-27 08:04:57 WRN] Unauthorized attempt to update name.
+[2024-12-27 08:05:10 INF] UpdatePassword request received.
+[2024-12-27 08:05:10 WRN] GetCurrentUser could not find a user with Email: test@test
+[2024-12-27 08:05:10 INF] Retrieved user: null
+[2024-12-27 08:05:10 WRN] Unauthorized attempt to update password.

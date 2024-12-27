@@ -1,0 +1,57 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Destination>
+
+@{
+    ViewData["Title"] = "Destination List";
+}
+
+<h1>Destination List</h1>
+
+@if (Model != null && Model.Any())
+
+{
+    <ul class="list-group">
+        @foreach (var destination in Model)
+
+        {
+            <li class="list-group-item">
+                <h3>
+                    <a asp-action="Details" asp-route-id="@destination.ID">
+                        @destination.Name
+                    </a>
+                </h3>
+                <p><strong>Description:</strong> @destination.Description</p>
+                <p><strong>Location:</strong> @destination.Location</p>
+                <p>
+                    <strong>Average Rating:</strong>
+                    @(destination.Reviews != null && destination.Reviews.Any()
+                        ? destination.Reviews.Average(r => r.Rating)?.ToString("0.0") ?? "No ratings yet"
+                        : "No ratings yet")
+                </p>
+            </li>
+        }
+    </ul>
+}
+
+else
+
+{
+    <p>No destinations found.</p>
+}
+
+<style>
+    .list-group-item {
+        margin-bottom: 10px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .list-group-item h3 {
+        margin-bottom: 10px;
+    }
+
+    .list-group-item p {
+        margin: 5px 0;
+    }
+</style>

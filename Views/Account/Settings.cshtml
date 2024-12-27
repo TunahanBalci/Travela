@@ -1,0 +1,187 @@
+﻿@model TravelApp.Models.Entities.User
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div id="message" class="alert d-none" role="alert"></div>
+
+<form id="csrf-form">
+    @Html.AntiForgeryToken()
+</form>
+
+<div class="container">
+    <h1>Settings</h1>
+
+    <!-- Name Field -->
+    <div class="mb-3">
+        <label for="Name">Name</label>
+        <input id="Name" type="text" value="@Model.Name" readonly class="form-control" />
+        <button id="edit-Name" type="button" class="btn btn-primary mt-2" onclick="enableEdit('Name')">
+            Edit
+        </button>
+        <button id="confirm-Name" type="button" class="btn btn-success mt-2 d-none" onclick="confirmEdit('Name')">
+            Confirm
+        </button>
+    </div>
+
+    <!-- Email Field -->
+    <div class="mb-3">
+        <label for="Email">Email</label>
+        <input id="Email" type="text" value="@Model.Email" readonly class="form-control" />
+        <button id="edit-Email" type="button" class="btn btn-primary mt-2" onclick="enableEdit('Email')">
+            Edit
+        </button>
+        <button id="confirm-Email" type="button" class="btn btn-success mt-2 d-none" onclick="confirmEdit('Email')">
+            Confirm
+        </button>
+    </div>
+
+    <!-- Password Update Field -->
+
+    <div id="PasswordFields" class="d-none">
+        <div class="mb-3">
+            <label for="CurrentPassword">Current Password</label>
+            <input id="CurrentPassword" type="password" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="NewPassword">New Password</label>
+            <input id="NewPassword" type="password" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="ConfirmPassword">Confirm New Password</label>
+            <input id="ConfirmPassword" type="password" class="form-control" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label id="passwordLabel" for="Password">Password</label>
+        <input id="Password" type="password" value="" readonly class="form-control" />
+        <button id="edit-Password" type="button" class="btn btn-primary mt-2" onclick="enableEdit('Password')">
+            Edit
+        </button>
+        <button id="confirm-Password" type="button" class="btn btn-success mt-2 d-none" onclick="confirmEdit('Password')">
+            Confirm
+        </button>
+    </div>
+
+    <!-- Container for Current, New, and Confirm Password Fields -->
+</div>
+<!-- New Buttons Section -->
+<div style="display:flex;justify-content:center;gap:200px;margin-bottom:80px;margin-top:100px">
+    <a href="/Account/Preferences" class="btn btn-custom btn-info-custom">Preferences</a>
+    <a href="/Account/PastTravels" class="btn btn-custom btn-secondary-custom">Past Travels</a>
+    <a href="/Account/FavoritedDestinations" class="btn btn-custom btn-warning-custom">Favorites</a>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        function enableEdit(fieldId) {
+            const inputField = document.getElementById(fieldId);
+            const editButton = document.getElementById(`edit-${fieldId}`);
+            const confirmButton = document.getElementById(`confirm-${fieldId}`);
+            const passwordFields = document.getElementById('PasswordFields');
+
+            // Make the input field editable
+            inputField.removeAttribute('readonly');
+            inputField.focus();
+
+            // Toggle button visibility
+            editButton.classList.add('d-none');
+            confirmButton.classList.remove('d-none');
+
+            // If editing Password, show additional fields and hide main password field
+            if (fieldId === 'Password') {
+                passwordFields.classList.remove('d-none');
+                inputField.classList.add('d-none'); // Hide the main password input
+
+                passwordLabel.classList.add('d-none');
+            }
+        }
+
+        function confirmEdit(fieldId) {
+            const inputField = document.getElementById(fieldId);
+            const editButton = document.getElementById(`edit-${fieldId}`);
+            const confirmButton = document.getElementById(`confirm-${fieldId}`);
+            const csrfToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const messageDiv = document.getElementById('message');
+
+            // Determine the action to call based on fieldId
+            let action = '';
+            let body = '';
+            if (fieldId === 'Name') {
+                action = 'UpdateName';
+                body = `Value=${encodeURIComponent(inputField.value)}`;
+            } else if (fieldId === 'Email') {
+                action = 'UpdateEmail';
+                body = `Value=${encodeURIComponent(inputField.value)}`;
+            } else if (fieldId === 'Password') {
+                action = 'UpdatePassword';
+                const currentPassword = document.getElementById('CurrentPassword').value;
+                const newPassword = document.getElementById('NewPassword').value;
+                const confirmPassword = document.getElementById('ConfirmPassword').value;
+
+                // Simple client-side validation
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    displayMessage("All password fields are required.", "danger");
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    displayMessage("New passwords do not match.", "danger");
+                    return;
+                }
+
+                body = `CurrentPassword=${encodeURIComponent(currentPassword)}&NewPassword=${encodeURIComponent(newPassword)}&ConfirmPassword=${encodeURIComponent(confirmPassword)}`;
+            }
+
+            // Perform the POST request to your controller action
+            fetch(`/Account/${action}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': csrfToken
+                },
+                body: body,
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            displayMessage(`Failed to update: ${err.message}`, 'danger');
+                            throw new Error(err.message); // Prevent further processing
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.success) {
+                        displayMessage(data.message, 'success');
+                        // Only on success, revert the UI
+                        if (fieldId === 'Password') {
+                            document.getElementById('PasswordFields').classList.add('d-none');
+                            document.getElementById('Password').classList.remove('d-none'); // Show the main password input again
+                        }
+                        // Show the Edit button
+                        editButton.classList.remove('d-none');
+                        // Hide the Confirm button
+                        confirmButton.classList.add('d-none');
+                        // Optionally, reload the page to reflect the updated information
+                        // window.location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Do not revert the UI on error
+                    // Keep the fields as is for the user to correct
+                });
+        }
+
+        function displayMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = `alert alert-${type}`;
+            messageDiv.innerText = message;
+            messageDiv.classList.remove('d-none');
+        }
+    </script>
+}

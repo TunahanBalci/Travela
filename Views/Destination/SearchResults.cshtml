@@ -1,0 +1,29 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Destination>
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<h1>Search Results</h1>
+
+@if (Model.Any())
+{
+    <ul class="list-group">
+        @foreach (var destination in Model)
+        {
+            <li class="list-group-item">
+                <h3>
+                    <a asp-controller="Destination" asp-action="Details" asp-route-id="@destination.ID">
+                        @destination.Name
+                    </a>
+                </h3>
+                <p><strong>Description:</strong> @destination.Description</p>
+                <p><strong>Location:</strong> @destination.Location</p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No destinations found for your search.</p>
+}

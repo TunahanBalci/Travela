@@ -1,0 +1,559 @@
+﻿@model TravelApp.Models.ViewModels.HomeViewModel
+
+@{
+
+    ViewData["Title"] = "Travela";
+
+    var stats = ViewBag.DestinationStats as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+    var topUsersByReviews = ViewBag.TopUsersByReviews as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+    var destinationRatings = ViewBag.DestinationRatings as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+    var cityRatings = ViewBag.CityRatings as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+
+    var cities = ViewBag.cities as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+
+}
+
+
+<div class="text-center">
+    <h1 style="margin-top:75px;margin-bottom:50px;font-weight:bold;color:#526D82" class="display-4 mb-4">Got Plans For Future Travels?</h1>
+
+    <!-- Destination Grid with Pagination -->
+    <div style="margin-top:150px" class="container mt-5 position-relative">
+        <h2 style="color:#9DB2BF" class="h4 text-center mb-4">Explore Destinations</h2>
+        <!-- Left Arrow -->
+        <div class="arrow arrow-prev" id="prevDestArrow">
+            <div class="arrow-top"></div>
+            <div class="arrow-bottom"></div>
+        </div>
+
+        <!-- Destination Grid -->
+        <div id="destinationContainer" class="row justify-content-center">
+            <!-- Destination elements will be dynamically populated here -->
+        </div>
+
+        <!-- Right Arrow -->
+        <div class="arrow arrow-next" id="nextDestArrow">
+            <div class="arrow-top"></div>
+            <div class="arrow-bottom"></div>
+        </div>
+    </div>
+
+    <!-- Accommodation Grid with Pagination -->
+    <div class="container mt-5 position-relative">
+        <h2 style="color:#9DB2BF" class="h4 text-center mb-4">Explore Accommodations</h2>
+        <!-- Left Arrow -->
+        <div class="arrow arrow-prev" id="prevAccArrow">
+            <div class="arrow-top"></div>
+            <div class="arrow-bottom"></div>
+        </div>
+
+        <!-- Accommodation Grid -->
+        <div id="accommodationContainer" class="row justify-content-center">
+            <!-- Accommodation elements will be dynamically populated here -->
+        </div>
+
+        <!-- Right Arrow -->
+        <div class="arrow arrow-next" id="nextAccArrow">
+            <div class="arrow-top"></div>
+            <div class="arrow-bottom"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Serialize the list of favorited destination IDs into a JavaScript array of strings
+    const favoritedDestinationIds = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.FavoritedDestinationIds));
+
+    // Serialize the destinations with IDs as strings
+    const destinations = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Destinations));
+
+    // Serialize the accommodations with IDs as strings
+    const accommodations = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Accommodations));
+
+    const itemsPerPage = 6;
+    let currentDestPage = 0;
+    let currentAccPage = 0;
+
+    // Function to generate star ratings HTML
+    function generateStarRating(rating) {
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+        let starsHtml = '';
+
+        for (let i = 0; i < fullStars; i++) {
+            starsHtml += '<i class="fas fa-star" style="color: #ffc107; margin-right: 2px;"></i>';
+        }
+
+        if (halfStar) {
+            starsHtml += '<i class="fas fa-star-half-alt" style="color: #ffc107; margin-right: 2px;"></i>';
+        }
+
+        for (let i = 0; i < emptyStars; i++) {
+            starsHtml += '<i class="far fa-star" style="color: #ffc107; margin-right: 2px;"></i>';
+        }
+
+        return starsHtml;
+    }
+
+    // Function to render destinations with pagination
+    function renderDestinations() {
+        const container = document.getElementById('destinationContainer');
+        container.innerHTML = '';
+
+        const start = currentDestPage * itemsPerPage;
+        const end = Math.min(start + itemsPerPage, destinations.length);
+
+        for (let i = start; i < end; i++) {
+            const destination = destinations[i];
+            const isFavorited = favoritedDestinationIds.includes(destination.ID);
+
+            const card = document.createElement('div');
+            card.className = 'col-md-4 col-lg-2 mb-4 position-relative';
+
+            // Conditionally add the favorited star if the destination is favorited
+            const favoritedStar = isFavorited
+                ? `<i class="fas fa-star favorite-star"></i>`
+                : '';
+
+            card.innerHTML = `
+                    <a href="/Destination/Details/${destination.ID}" class="text-decoration-none">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="${destination.Image_Path}" alt="${destination.Name}" onerror="this.onerror=null;this.src='/images/fallback_destination.png';" style="height: 150px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 style="color:#526D82" class="card-title">${destination.Name}</h5>
+                                <p style="color:#526D82" class="card-text text-muted small">${destination.CityName}</p>
+                                <div class="rating">${generateStarRating(destination.AverageRating)}</div>
+                            </div>
+                            ${favoritedStar}
+                        </div>
+                    </a>
+                `;
+
+            container.appendChild(card);
+        }
+
+        updateArrows("Dest");
+    }
+
+    // Function to render accommodations with pagination
+    function renderAccommodations() {
+        const container = document.getElementById('accommodationContainer');
+        container.innerHTML = '';
+
+        const start = currentAccPage * itemsPerPage;
+        const end = Math.min(start + itemsPerPage, accommodations.length);
+
+        for (let i = start; i < end; i++) {
+            const accommodation = accommodations[i];
+
+            const card = document.createElement('div');
+            card.className = 'col-md-4 col-lg-2 mb-4';
+
+            card.innerHTML = `
+                    <a href="/Accommodation/Details/${accommodation.ID}" class="text-decoration-none">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="${accommodation.Image_Path}" alt="${accommodation.Name}" onerror="this.onerror=null;this.src='/images/fallback_accommodation.png';" style="height: 150px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 style="color:#526D82" class="card-title">${accommodation.Name}</h5>
+                                <p style="color:#526D82" class="card-text text-muted small">Price: $${accommodation.Price.toFixed(2)}</p>
+                                <p style="color:#526D82" class="card-text text-muted small">${accommodation.CityName}</p>
+                                <div class="rating">${generateStarRating(accommodation.AverageRating)}</div>
+                            </div>
+                        </div>
+                    </a>
+                `;
+
+            container.appendChild(card);
+        }
+
+        updateArrows("Acc");
+    }
+
+    // Function to update the visibility of pagination arrows
+    function updateArrows(type) {
+        const prevArrow = document.getElementById(type === "Dest" ? 'prevDestArrow' : 'prevAccArrow');
+        const nextArrow = document.getElementById(type === "Dest" ? 'nextDestArrow' : 'nextAccArrow');
+        const totalItems = type === "Dest" ? destinations.length : accommodations.length;
+        const currentPage = type === "Dest" ? currentDestPage : currentAccPage;
+
+        prevArrow.style.visibility = currentPage === 0 ? 'hidden' : 'visible';
+        nextArrow.style.visibility = (currentPage + 1) * itemsPerPage >= totalItems ? 'hidden' : 'visible';
+    }
+
+    // Function to navigate to the previous page
+    function prevPage(type) {
+        if (type === "Dest" && currentDestPage > 0) {
+            currentDestPage--;
+            renderDestinations();
+        } else if (type === "Acc" && currentAccPage > 0) {
+            currentAccPage--;
+            renderAccommodations();
+        }
+    }
+
+    // Function to navigate to the next page
+    function nextPage(type) {
+        if (type === "Dest" && (currentDestPage + 1) * itemsPerPage < destinations.length) {
+            currentDestPage++;
+            renderDestinations();
+        } else if (type === "Acc" && (currentAccPage + 1) * itemsPerPage < accommodations.length) {
+            currentAccPage++;
+            renderAccommodations();
+        }
+    }
+
+    // Event listeners for pagination arrows
+    document.getElementById('prevDestArrow').addEventListener('click', () => prevPage("Dest"));
+    document.getElementById('nextDestArrow').addEventListener('click', () => nextPage("Dest"));
+    document.getElementById('prevAccArrow').addEventListener('click', () => prevPage("Acc"));
+    document.getElementById('nextAccArrow').addEventListener('click', () => nextPage("Acc"));
+
+    // Initial render of destinations and accommodations
+    renderDestinations();
+    renderAccommodations();
+
+    // Debugging: Log the favoritedDestinationIds and destinations
+    console.log("Favorited Destination IDs:", favoritedDestinationIds);
+    console.log("Destinations:", destinations);
+</script>
+
+
+<div class="text-center">
+
+    <!-- Top Destinations -->
+    <div style="margin-top:150px;margin-bottom:150px" class="top-destinations mb-5">
+        <h2 class="h4 text-center mb-4" style="color: #9DB2BF">Top 10 Destinations</h2>
+        <ul style="width:90vw; max-width: 1200px;" class="list-group mx-auto">
+            @if (Model.Destinations.Any())
+            {
+                @foreach (var destination in Model.Destinations.Take(10).Select((d, index) => new { Destination = d, Rank = index + 1 }))
+
+                {
+
+                    var rankClass = destination.Rank switch
+
+                    {
+
+                        1 => "bg-gold-gradient text-white",
+
+                        2 => "bg-silver-gradient text-white",
+
+                        3 => "bg-bronze-gradient text-white",
+
+                        _ => "bg-light text-dark"
+
+                    };
+
+                    <li class="list-group-item @rankClass" style="margin-bottom: 10px; border-radius: 8px; padding: 15px; cursor: pointer; width: 100%;"
+                        onclick="window.location.href='/Destination/Details/@destination.Destination.ID';">
+                        <div class="d-flex align-items-center">
+                            <div class="rank-circle" style="font-size: 1.5rem; font-weight: bold; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%; background-color: #27374D; color: white;">
+                                @destination.Rank
+                            </div>
+                            <div class="ms-3" style="flex: 1">
+                                <h5 class="mb-1" style="color: #27374D; font-weight: bold;">@destination.Destination.Name</h5>
+                                <p class="mb-1 text-muted">@destination.Destination.CityName</p>
+                                <p class="mb-0 text-muted">@destination.Destination.Description</p>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item text-center text-muted">
+                    No destinations available at the moment.
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<style>
+    .list-group-item.bg-gold-gradient {
+        background: linear-gradient(90deg, #FFD700, #FFEC8B);
+    }
+
+    .list-group-item.bg-silver-gradient {
+        background: linear-gradient(90deg, #C0C0C0, #E5E5E5);
+    }
+
+    .list-group-item.bg-bronze-gradient {
+        background: linear-gradient(90deg, #CD7F32, #D8B190);
+    }
+
+    .list-group-item {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .list-group-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+    .rank-circle {
+        min-width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+        background-color: #27374D;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+
+
+<h1 style="font-size:50px;font-weight:bolder;color:#526D82;margin-top:100px;margin-bottom:50px" class="h1 text-center mb-4">Statistics</h1>
+    <!-- Charts Section -->
+    <div class="charts-container">
+        <!-- Destination Statistics Chart -->
+        <div class="chart-wrapper">
+            <h2 style="color:#9DB2BF" class="h5 text-center mb-3">Cities by Number of Destinations</h2>
+            <div class="chart-box">
+                <canvas id="destinationPieChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Top Users by Reviews Chart -->
+        <div class="chart-wrapper">
+            <h2 style="color:#9DB2BF" class="h5 text-center mb-3">Top Users by Review Count</h2>
+            <div class="chart-box">
+                <canvas id="topUsersByReviewsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Destination Ratings Chart -->
+        <div class="chart-wrapper">
+            <h2 style="color:#9DB2BF" class="h5 text-center mb-3">Destination Average Ratings</h2>
+            <div class="chart-box">
+                <canvas id="ratingsBarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- City Ratings Chart -->
+        <div class="chart-wrapper">
+            <h2 style="color:#9DB2BF" class="h5 text-center mb-3">City Average Ratings</h2>
+            <div class="chart-box">
+                <canvas id="cityRatingsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Limit chart sizes dynamically
+    const chartConfig = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'top' },
+            tooltip: { callbacks: { label: (context) => `${context.label}: ${context.raw}` } }
+        }
+    };
+
+    // Destination Statistics Pie Chart
+    new Chart(document.getElementById('destinationPieChart'), {
+        type: 'pie',
+        data: {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(stats.Select(s => s.CityName))),
+            datasets: [{
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(stats.Select(s => s.Count))),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
+                borderColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
+                borderWidth: 1
+            }]
+        },
+        options: chartConfig
+    });
+
+    // Top Users by Review Count Doughnut Chart
+    new Chart(document.getElementById('topUsersByReviewsChart'), {
+        type: 'doughnut',
+        data: {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(topUsersByReviews.Select(u => u.UserName))),
+            datasets: [{
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(topUsersByReviews.Select(u => u.ReviewCount))),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#C7C7C7'],
+                borderWidth: 1
+            }]
+        },
+        options: chartConfig
+    });
+
+    // Destination Ratings Bar Chart
+    new Chart(document.getElementById('ratingsBarChart'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(destinationRatings.Select(d => d.Name))),
+            datasets: [{
+                label: 'Average Rating',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(destinationRatings.Select(d => d.AverageRating))),
+                backgroundColor: '#4BC0C0',
+                borderColor: '#4BC0C0',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            ...chartConfig,
+            scales: { y: { beginAtZero: true, max: 5 } }
+        }
+    });
+
+    // City Ratings Horizontal Bar Chart
+    new Chart(document.getElementById('cityRatingsChart'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(cityRatings.Select(c => c.City))),
+            datasets: [{
+                label: 'Average Rating by City',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(cityRatings.Select(c => c.AverageRating))),
+                backgroundColor: '#FFCE56',
+                borderColor: '#FFCE56',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            ...chartConfig,
+            indexAxis: 'y',
+            scales: { x: { beginAtZero: true, max: 5 } }
+        }
+    });
+</script>
+
+<!-- Custom Styles -->
+<style>
+    .chart-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 30px 0;
+    }
+
+    .chart-box {
+        width: 100%;
+        max-width: 600px;
+        height: 300px;
+    }
+
+    ul.list-group {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+</style>
+
+@section Styles {
+    <!-- Font Awesome for star icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Star Ratings */
+        .rating {
+            margin-top: 5px;
+        }
+
+        .fas.fa-star,
+        .fas.fa-star-half-alt,
+        .far.fa-star {
+            font-size: 1rem;
+        }
+
+        /* Pagination Arrows */
+        .container {
+            position: relative;
+        }
+
+        .arrow {
+            cursor: pointer;
+            height: 120px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: background-color 0.2s ease;
+            width: 56px;
+            z-index: 10;
+        }
+
+        .arrow-prev {
+            left: -60px;
+            transform: translateY(-50%); scaleX(-1); /* Flip the arrow for previous */
+        }
+
+        .arrow-next {
+            right: -60px;
+            transform: translateY(-50%);
+        }
+
+        .arrow-top,
+        .arrow-bottom {
+            background-color: #000;
+            height: 4px;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+
+        .arrow-prev .arrow-top {
+            transform: rotate(45deg);
+            transform-origin: bottom left;
+        }
+
+        .arrow-prev .arrow-bottom {
+            transform: rotate(-45deg);
+            transform-origin: top left;
+        }
+
+        .arrow-next .arrow-top {
+            transform: rotate(45deg);
+            transform-origin: bottom right;
+        }
+
+        .arrow-next .arrow-bottom {
+            transform: rotate(-45deg);
+            transform-origin: top right;
+        }
+
+        .arrow:hover .arrow-top,
+        .arrow:hover .arrow-bottom {
+            background-color: #666;
+        }
+
+        /* Card Styles */
+        .card {
+            position: relative;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+        /* Favorited Star - Top Right */
+        .favorite-star {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: gold;
+            font-size: 1.5rem;
+            z-index: 10;
+            pointer-events: none; /* Allows clicks to pass through */
+        }
+
+        /* Image Styling */
+        .card-img-top {
+            height: 150px;
+            object-fit: cover;
+        }
+    </style>
+}

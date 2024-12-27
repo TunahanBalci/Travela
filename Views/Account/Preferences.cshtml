@@ -1,0 +1,212 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Preference>
+
+@{
+    ViewData["Title"] = "Preferences";
+    var userPreferences = ViewBag.UserPreferences as IEnumerable<TravelApp.Models.Entities.Preference> ?? new List<TravelApp.Models.Entities.Preference>();
+    var allPreferences = Model ?? new List<TravelApp.Models.Entities.Preference>();
+}
+
+<form id="preferenceForm">
+    @Html.AntiForgeryToken()
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Manage Preferences</h1>
+
+        <!-- Feedback Section -->
+        <div id="feedbackMessage" class="mb-4"></div>
+
+        <div class="row">
+            <!-- User Preferences -->
+            <div class="col-md-6">
+                <h3>Your Preferences</h3>
+                <div id="userPreferences">
+                    @if (!userPreferences.Any())
+                    {
+                        <p class="alert alert-warning">You don't have any preferences yet.</p>
+                    }
+                    else
+                    {
+                        <ul class="list-group">
+                            @foreach (var preference in userPreferences)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center" id="user-preference-@preference.ID">
+                                    @preference.Content
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="removePreference('@preference.ID', true)">Remove</button>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+
+            <!-- All Preferences -->
+            <div class="col-md-6">
+                <h3>All Preferences</h3>
+                <div id="allPreferences">
+                    @if (!allPreferences.Any())
+                    {
+                        <p class="alert alert-warning">No preferences available.</p>
+                    }
+                    else
+                    {
+                        <ul class="list-group">
+                            @foreach (var preference in allPreferences)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center" id="all-preference-@preference.ID">
+                                    @preference.Content
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="addPreference('@preference.ID')">Add</button>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="text-center mt-4">
+    <a href="Settings" class="btn btn-secondary">Return to Account Page</a>
+</div>
+@section Scripts {
+    <script>
+
+        // Function to get the anti-forgery token
+        function getAntiForgeryToken() {
+            return document.querySelector('input[name="__RequestVerificationToken"]').value;
+        }
+
+
+        let feedbackTimeout; // Declare a variable to track the timeout
+
+        function displayFeedback(message, type) {
+            const feedbackDiv = document.getElementById('feedbackMessage');
+            feedbackDiv.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
+
+            // Clear any existing timeout before setting a new one
+            if (feedbackTimeout) {
+                clearTimeout(feedbackTimeout);
+            }
+
+            // Set a new timeout to clear the message after 5 seconds
+            feedbackTimeout = setTimeout(() => {
+                feedbackDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        function updateEmptyState(listContainer, message) {
+            const listGroup = listContainer.querySelector('.list-group');
+            if (!listGroup || listGroup.children.length === 0) {
+                // If list is empty, show the empty state message
+                if (!listContainer.querySelector('.empty-state')) {
+                    const emptyMessage = document.createElement('p');
+                    emptyMessage.className = 'alert alert-warning empty-state';
+                    emptyMessage.textContent = message;
+                    listContainer.appendChild(emptyMessage);
+                }
+            } else {
+                // If list is not empty, remove the empty state message
+                const emptyMessage = listContainer.querySelector('.empty-state');
+                if (emptyMessage) {
+                    emptyMessage.remove();
+                }
+            }
+        }
+
+        function addPreference(preferenceId) {
+            const preferenceElement = document.getElementById(`all-preference-${preferenceId}`);
+            const preferenceContent = preferenceElement?.textContent.trim().replace('Add', '').trim();
+
+            if (!preferenceContent) {
+                displayFeedback('An error occurred while adding the preference.', 'danger');
+                return;
+            }
+
+            fetch('/Account/AddPreference', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': getAntiForgeryToken()
+                },
+                body: JSON.stringify({ preferenceId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        preferenceElement?.remove();
+
+                        const userPreferencesContainer = document.getElementById('userPreferences');
+                        const newPreference = document.createElement('li');
+                        newPreference.id = `user-preference-${preferenceId}`;
+                        newPreference.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        newPreference.innerHTML = `
+                            ${preferenceContent}
+                            <button type="button" class="btn btn-sm btn-danger" onclick="removePreference('${preferenceId}', true)">Remove</button>
+                        `;
+
+                        if (!userPreferencesContainer.querySelector('.list-group')) {
+                            userPreferencesContainer.innerHTML = '<ul class="list-group"></ul>';
+                        }
+                        userPreferencesContainer.querySelector('.list-group').appendChild(newPreference);
+
+                        updateEmptyState(document.getElementById('allPreferences'), 'No preferences available.');
+                        updateEmptyState(document.getElementById('userPreferences'), "You don't have any preferences yet.");
+                    }
+                    displayFeedback(data.message, data.success ? 'success' : 'danger');
+                })
+                .catch(() => {
+                    displayFeedback('An error occurred. Please try again later.', 'danger');
+                });
+        }
+
+        function removePreference(preferenceId, isUserPreference) {
+            const preferenceElement = document.getElementById(`user-preference-${preferenceId}`);
+            const preferenceContent = preferenceElement?.textContent.trim().replace('Remove', '').trim();
+
+            if (!preferenceContent) {
+                displayFeedback('An error occurred while removing the preference.', 'danger');
+                return;
+            }
+
+            fetch('/Account/RemovePreference', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': getAntiForgeryToken()
+                },
+                body: JSON.stringify({ preferenceId, isUserPreference })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        preferenceElement?.remove();
+
+                        const allPreferencesContainer = document.getElementById('allPreferences');
+                        const newPreference = document.createElement('li');
+                        newPreference.id = `all-preference-${preferenceId}`;
+                        newPreference.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        newPreference.innerHTML = `
+                            ${preferenceContent}
+                            <button type="button" class="btn btn-sm btn-primary" onclick="addPreference('${preferenceId}')">Add</button>
+                        `;
+
+                        if (!allPreferencesContainer.querySelector('.list-group')) {
+                            allPreferencesContainer.innerHTML = '<ul class="list-group"></ul>';
+                        }
+                        allPreferencesContainer.querySelector('.list-group').appendChild(newPreference);
+
+                        updateEmptyState(document.getElementById('userPreferences'), "You don't have any preferences yet.");
+                        updateEmptyState(document.getElementById('allPreferences'), 'No preferences available.');
+                    }
+                    displayFeedback(data.message, data.success ? 'success' : 'danger');
+                })
+                .catch(() => {
+                    displayFeedback('An error occurred. Please try again later.', 'danger');
+                });
+        }
+
+
+
+    </script>
+}
+
+

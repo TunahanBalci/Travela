@@ -1,0 +1,100 @@
+﻿@model TravelApp.Models.ViewModels.CreateDestinationViewModel
+
+@{
+    ViewData["Title"] = "Edit Destination";
+}
+
+<h2>Edit Destination</h2>
+
+<form asp-action="EditDestination" asp-controller="CreateDestination" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location"></label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CityID">City</label>
+        <select asp-for="CityID" asp-items="@(new SelectList(Model.Cities, "ID", "Name"))" class="form-control"></select>
+        <span asp-validation-for="CityID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Activities</label>
+        @if (Model.Activities.Any())
+
+        {
+            <div class="checkbox-group">
+                @foreach (var activity in Model.Activities)
+
+                {
+                    <div class="form-check">
+                        <input type="checkbox"
+                               name="SelectedActivityIds"
+                               id="activity_@activity.ID"
+                               value="@activity.ID"
+                               class="form-check-input"
+                        @(Model.SelectedActivityIds.Contains(activity.ID) ? "checked" : "") />
+                        <label class="form-check-label" for="activity_@activity.ID">@activity.Name</label>
+                    </div>
+                }
+            </div>
+        }
+
+        else
+
+        {
+            <p>No activities available.</p>
+        }
+    </div>
+
+    <div class="form-group">
+        <label>Attractions</label>
+        @if (Model.Attractions.Any())
+
+        {
+            <div class="checkbox-group">
+                @foreach (var attraction in Model.Attractions)
+
+                {
+                    <div class="form-check">
+                        <input type="checkbox"
+                               name="SelectedPreferencesIds"
+                               id="attraction_@attraction.ID"
+                               value="@attraction.ID"
+                               class="form-check-input"
+                        @(Model.SelectedPreferencesIds.Contains(attraction.ID) ? "checked" : "") />
+                        <label class="form-check-label" for="attraction_@attraction.ID">@attraction.Content</label>
+                    </div>
+                }
+            </div>
+        }
+
+        else
+
+        {
+            <p>No attractions available.</p>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <button type="button" onclick="location.href='@Url.Action("ListDestinations", "AdminPanel")'" class="btn btn-secondary">Cancel</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

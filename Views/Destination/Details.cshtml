@@ -1,0 +1,388 @@
+﻿@model TravelApp.Models.Entities.Destination
+
+@{
+    ViewData["Title"] = "Destination Details";
+
+
+
+    var fallbackImagePath = Url.Content("~/images/fallback-destination.jpg");
+
+    bool isVisited = ViewBag.Visited ?? false;
+
+    bool hasReviewed = ViewBag.HasReviewed ?? false;
+}
+
+<div style="display: flex; flex-direction: row; margin-top: 50px;">
+    <!-- Image and Visit Info Section -->
+    <div style="text-align: center; margin: 1rem 0;">
+        <img src="@Model.Image_Path" alt="@Model.Name" onerror="this.onerror=null;this.src='/images/fallback_destination.png';"
+             style="width: 500px; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+        <div style="margin-top: 10px;">
+            @if (!isVisited)
+            {
+                <form asp-action="MarkAsVisited" method="post">
+                    <input type="hidden" name="DestinationID" value="@Model.ID" />
+                    <button type="submit" class="btn btn-success" style="
+                            margin-top: 25px;
+                            width:500px;
+                            background-color: #28a745;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 25px;
+                            font-size: 1.2rem;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            transition: all 0.3s ease;">
+                        Mark as Visited
+                    </button>
+                </form>
+            }
+            else
+            {
+                <div style="margin-top: 15px; padding: 10px; border: 1px solid #28a745; border-radius: 8px; background-color: #d4edda; color: #155724;">
+                    <i class="fas fa-check-circle" style="margin-right: 5px;"></i> You have visited this destination.
+                </div>
+            }
+
+            @if (isVisited && !hasReviewed)
+            {
+                <div style="margin-top: 15px; padding: 10px; border: 1px solid #ffc107; border-radius: 8px; background-color: #fff3cd; color: #856404;">
+                    <i class="fas fa-info-circle" style="margin-right: 5px;"></i> You have not reviewed this destination.
+                </div>
+
+                <!-- Review Form -->
+                <form asp-action="SubmitReview" asp-controller="Destination" method="post" style="margin-top: 15px;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="destinationId" value="@Model.ID" />
+                    <div>
+                        <h4 style="margin-top:20px;text-decoration:underline">Leave a Review</h4>
+                        <div id="star-rating" style="display: flex; margin-bottom: 10px; justify-content:center; margin-top:40px">
+                            @for (int i = 1; i <= 5; i++)
+
+                            {
+                                <i class="fa fa-star" data-value="@i" style="font-size: 2rem; color: #ddd; cursor: pointer; margin-right: 5px;"
+                                   onclick="document.getElementById('rating-input').value = '@i'; highlightStars(@i);"></i>
+                            }
+                        </div>
+                        <input type="hidden" id="rating-input" name="rating" value="0" />
+                    </div>
+                    <textarea name="comment" id="review-comment" placeholder="Write your comment..."
+                              style="
+                        width: 100%;
+                        height: 120px;
+                        padding: 10px 15px;
+                        font-size: 1rem;
+                        border: 1px solid #dee2e6;
+                        border-radius: 10px;
+                        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+                        resize: none;
+                        transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                    </textarea>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Submit</button>
+                </form>
+            }
+
+            @if (TempData["FeedbackMessage"] != null)
+            {
+                <p>@TempData["FeedbackMessage"]</p>
+            }
+        </div>
+        <div style="margin-top: 15px;">
+            @if (ViewBag.IsFavorited)
+            {
+                <!-- Remove from Favorites Button -->
+                <form asp-action="RemoveFromFavorites" method="post" style="margin-top: 15px;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="DestinationID" value="@Model.ID" />
+                    <button type="submit" class="btn btn-danger" style="
+                margin-top: 15px;
+                width: 100%;
+                background-color: #dc3545;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 25px;
+                font-size: 1.2rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;">
+                        Remove from Favorites
+                    </button>
+                </form>
+            }
+            else
+            {
+                <!-- Add to Favorites Button -->
+                <form asp-action="AddToFavorites" method="post" style="margin-top: 15px;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="DestinationID" value="@Model.ID" />
+                    <button type="submit" class="btn btn-warning" style="
+                margin-top: 15px;
+                width: 100%;
+                background-color: #ffc107;
+                color: black;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 25px;
+                font-size: 1.2rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;">
+                        Add to Favorites
+                    </button>
+                </form>
+            }
+        </div>
+
+    </div>
+
+    <!-- Destination Details Section -->
+    <div style="margin: 10px 25px 40px 25px; max-width: 600px;">
+        <!-- Destination Header -->
+        <div>
+            <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;color:#27374D">@Model.Name</h1>
+            <p style="color: #526D82; transform: translateY(-10px);">@Model.City?.Name, @Model.Location</p>
+        </div>
+
+        <!-- Destination Details -->
+        <div style="margin-bottom: 1rem;">
+            <p style="display: flex; align-items: center;">
+                @{
+                    int fullStars = 0;
+
+                    bool halfStar = false;
+
+                    int emptyStars = 5;
+
+
+
+                    if (Model.Average_Rating.HasValue)
+
+                    {
+                        fullStars = (int)Math.Floor(Model.Average_Rating.Value);
+                        halfStar = Model.Average_Rating.Value % 1 >= 0.5;
+                        emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+                    }
+                }
+
+                @if (Model.Average_Rating.HasValue)
+
+                {
+                    @for (var i = 0; i < fullStars; i++)
+                    {
+                        <i style="font-size: 2rem; color: #ffc107; margin-right: 5px;" class="fas fa-star"></i>
+                    }
+                    @if (halfStar)
+                    {
+                        <i style="font-size: 2rem; color: #ffc107; margin-right: 5px;" class="fas fa-star-half-alt"></i>
+                    }
+                    @for (var i = 0; i < emptyStars; i++)
+                    {
+                        <i style="font-size: 2rem; color: #ffc107; margin-right: 5px;" class="far fa-star"></i>
+                    }
+                    <span style="background-color: #28a745; color: white; padding: 0.2rem 0.5rem; border-radius: 5px; margin-left: 10px; font-size: 1.2rem;">
+                        @Model.Average_Rating.Value.ToString("0.0")
+                    </span>
+                }
+
+                else
+
+                {
+                    @for (var i = 0; i < 5; i++)
+                    {
+                        <i style="font-size: 2rem; color: #ffc107; margin-right: 5px;" class="far fa-star"></i>
+                    }
+                    <span style="color: #9DB2BF; font-size: 1rem; margin-left: 10px;">No ratings yet</span>
+                }
+            </p>
+        </div>
+
+        <!-- Destination Description -->
+        <div style="margin-top: 50px; margin-bottom: 1rem;">
+            <p>@Model.Description</p>
+        </div>
+
+        <!-- Activities Section -->
+        <div style="margin-top: 50px; margin-bottom: 1rem;">
+            <h4 style="margin-bottom: 10px;color:#27374D">Activities</h4>
+            @if (Model.Activities != null && Model.Activities.Any())
+            {
+                <ul style="list-style: none; padding: 0;">
+                    @foreach (var activity in Model.Activities)
+                    {
+                        <li style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 10px 15px; margin-bottom: 10px; border-radius: 5px;">
+                            <strong style="color:#27374D"> @activity.Name</strong>
+                            <p style="margin: 0;color:#526D82"> ➔ Type: @activity.Type</p>
+                            <p style="margin: 0;color:#526D82"> ➔ Date: @activity.Date.ToShortDateString()</p>
+                            <p style="margin: 0;color:#526D82"> ➔ Price: $@activity.Price.ToString("0.00")</p>
+                            <p style="margin: 0;color:#526D82"> ➔ Reservation: @(activity.Requires_Reservation ? "Required" : "Not Required")</p>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p style="color: #9DB2BF;">No activities available.</p>
+            }
+        </div>
+
+        <!-- Attractions Section -->
+        <div style="margin-top: 20px; margin-bottom: 1rem;">
+            <h4 style="margin-bottom: 10px;color:#27374D">Attractions</h4>
+            @if (Model.Attractions != null && Model.Attractions.Any())
+            {
+                <ul style="list-style: none; padding: 0;">
+                    @foreach (var attraction in Model.Attractions)
+                    {
+                        <li style="background-color: #f8f9fa;color:#526D82; border: 1px solid #dee2e6; padding: 10px 15px; margin-bottom: 10px; border-radius: 5px;">
+                            @attraction.Content
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p style="color: #6c757d;">No attractions available.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div style="margin: 1rem; flex: 1;">
+        <h4 style="margin-bottom: 10px; text-decoration: underline;color:#27374D">Reviews</h4>
+        @if (Model.Reviews != null && Model.Reviews.Any())
+
+
+
+        {
+            <ul style="list-style: none; padding: 0;">
+                @foreach (var review in Model.Reviews)
+
+
+
+                {
+                    <li style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 10px 15px; margin-bottom: 10px; border-radius: 5px;">
+                        <!-- Render User Name -->
+                        <!-- Render Rating as Stars -->
+                        @{
+                            int _fullStars = 0;
+
+
+
+                            bool _halfStar = false;
+
+
+
+                            int _emptyStars = 5;
+
+
+
+
+
+
+
+                            if (review.Rating.HasValue)
+
+
+
+                            {
+
+
+
+                                _fullStars = (int)Math.Floor((double)(review.Rating.Value));
+
+
+
+                                _halfStar = review.Rating.Value % 1 >= 0.5;
+
+
+
+                                _emptyStars = 5 - _fullStars - (_halfStar ? 1 : 0);
+
+
+
+                            }
+
+
+
+
+
+
+
+                            for (int i = 0; i < _fullStars; i++)
+
+
+
+                            {
+                                <i style="font-size: 1.2rem; color: #ffc107; margin-right: 3px;" class="fas fa-star"></i>
+                            }
+
+
+
+
+
+
+
+                            if (_halfStar)
+
+
+
+                            {
+                                <i style="font-size: 1.2rem; color: #ffc107; margin-right: 3px;" class="fas fa-star-half-alt"></i>
+                            }
+
+
+
+
+
+
+
+                            for (int i = 0; i < _emptyStars; i++)
+
+
+
+                            {
+                                <i style="font-size: 1.2rem; color: #ddd; margin-right: 3px;" class="far fa-star"></i>
+                            }
+                        }
+
+                        <!-- Render Comment -->
+                        <br />
+                        <br />
+                        <strong>"</strong><em>@review.Comment</em><strong>"</strong><br />
+                        <strong> -@review.User?.Name</strong>
+
+                    </li>
+                }
+            </ul>
+        }
+
+
+
+        else
+
+
+
+        {
+            <p style="color: #9DB2BF;">No reviews available.</p>
+        }
+    </div>
+
+
+</div>
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+}
+
+@section Scripts {
+    <script>
+        function highlightStars(starValue) {
+            const stars = document.querySelectorAll('#star-rating .fa-star');
+            stars.forEach((star, index) => {
+                star.style.color = index < starValue ? '#ffc107' : '#ddd';
+            });
+        }
+    </script>
+}

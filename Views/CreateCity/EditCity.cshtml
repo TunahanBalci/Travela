@@ -1,0 +1,69 @@
+﻿@model TravelApp.Models.ViewModels.EditCityViewModel
+
+@{
+    ViewData["Title"] = "Edit City";
+}
+
+<h2>Edit City</h2>
+
+<form asp-action="EditCity" asp-controller="CreateCity" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="ID" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location"></label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Climate"></label>
+        <input asp-for="Climate" class="form-control" />
+        <span asp-validation-for="Climate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Terrain"></label>
+        <input asp-for="Terrain" class="form-control" />
+        <span asp-validation-for="Terrain" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Cost_Of_Living"></label>
+        <input asp-for="Cost_Of_Living" type="number" step="0.01" class="form-control" />
+        <span asp-validation-for="Cost_Of_Living" class="text-danger"></span>
+    </div>
+
+    <!-- Activities Selection -->
+    <div class="form-group">
+        <label>Activities</label>
+        @if (Model.Activities != null && Model.Activities.Any())
+
+        {
+            <select asp-for="SelectedActivityIds" asp-items="Model.Activities" class="form-control" multiple>
+                <!-- Multiple selections allowed -->
+            </select>
+        }
+
+        else
+
+        {
+            <p>No activities available.</p>
+        }
+        <span asp-validation-for="SelectedActivityIds" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <button type="button" onclick="location.href='@Url.Action("ListCities", "AdminPanel")'" class="btn btn-secondary">Cancel</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

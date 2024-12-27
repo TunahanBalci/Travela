@@ -1,0 +1,121 @@
+﻿@model TravelApp.Models.ViewModels.CreateAccommodationViewModel
+
+@{
+    ViewData["Title"] = "Edit Accommodation";
+}
+
+<h2>Edit Accommodation</h2>
+
+<form asp-action="EditAccommodation" asp-controller="CreateAccommodation" method="post">
+    @* Display Validation Summary *@
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="ID" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Type" class="control-label"></label>
+        <input asp-for="Type" class="form-control" />
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location" class="control-label"></label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" type="number" step="0.01" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="Availability" class="form-check-input" />
+        <label asp-for="Availability" class="form-check-label"></label>
+        <span asp-validation-for="Availability" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CityID" class="control-label">City</label>
+        <select asp-for="CityID"
+                asp-items="@(new SelectList(Model.Cities, "ID", "Name"))"
+                class="form-control">
+            <option value="">Select a city</option>
+        </select>
+        <span asp-validation-for="CityID" class="text-danger"></span>
+    </div>
+
+    <!-- Activities Selection -->
+    <div class="form-group">
+        <label>Activities</label>
+        @if (Model.Activities != null && Model.Activities.Any())
+
+        {
+            <div class="checkbox-group">
+                @foreach (var activity in Model.Activities)
+
+                {
+                    <div class="form-check">
+                        <input type="checkbox"
+                               name="SelectedActivityIds"
+                               id="activity_@activity.ID"
+                               value="@activity.ID"
+                               class="form-check-input"
+                        @(Model.SelectedActivityIds.Contains(activity.ID) ? "checked" : "") />
+                        <label class="form-check-label" for="activity_@activity.ID">@activity.Name</label>
+                    </div>
+                }
+            </div>
+        }
+
+        else
+
+        {
+            <p>No activities available.</p>
+        }
+    </div>
+
+    <!-- Amenities Selection -->
+    <div class="form-group">
+        <label>Amenities</label>
+        @if (Model.Amenities != null && Model.Amenities.Any())
+
+        {
+            <div class="checkbox-group">
+                @foreach (var amenity in Model.Amenities)
+
+                {
+                    <div class="form-check">
+                        <input type="checkbox"
+                               name="SelectedAmenityIds"
+                               id="amenity_@amenity.ID"
+                               value="@amenity.ID"
+                               class="form-check-input"
+                        @(Model.SelectedAmenityIds.Contains(amenity.ID) ? "checked" : "") />
+                        <label class="form-check-label" for="amenity_@amenity.ID">@amenity.Name</label>
+                    </div>
+                }
+            </div>
+        }
+
+        else
+
+        {
+            <p>No amenities available.</p>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <button type="button" onclick="location.href='@Url.Action("ListAccommodations", "AdminPanel")'" class="btn btn-secondary">Cancel</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

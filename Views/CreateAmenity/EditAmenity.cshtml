@@ -1,0 +1,53 @@
+﻿@model TravelApp.Models.ViewModels.CreateAmenityViewModel
+
+@{
+    ViewData["Title"] = "Edit Amenity";
+}
+
+<h2>Edit Amenity</h2>
+
+<form asp-action="EditAmenity" asp-controller="CreateAmenity" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Select Accommodations</label>
+        @if (Model.Accommodations != null && Model.Accommodations.Any())
+
+        {
+            <div class="checkbox-group">
+                @foreach (var accommodation in Model.Accommodations)
+
+                {
+                    <div class="form-check">
+                        <input type="checkbox"
+                               name="SelectedAccommodationIds"
+                               id="accommodation_@accommodation.ID"
+                               value="@accommodation.ID"
+                               class="form-check-input"
+                        @(Model.SelectedAccommodationIds.Contains(accommodation.ID) ? "checked" : "") />
+                        <label class="form-check-label" for="accommodation_@accommodation.ID">@accommodation.Name</label>
+                    </div>
+                }
+            </div>
+        }
+
+        else
+
+        {
+            <p>No accommodations available.</p>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <button type="button" onclick="location.href='@Url.Action("ListAmenities", "AdminPanel")'" class="btn btn-secondary">Cancel</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

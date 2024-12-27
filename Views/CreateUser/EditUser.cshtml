@@ -1,0 +1,52 @@
+﻿@model TravelApp.Models.Entities.User
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h2>Edit User</h2>
+
+@if (Model.IsAdmin)
+
+{
+    <p class="text-danger font-weight-bold">
+        This user is an administrator and cannot be edited.
+    </p>
+}
+
+else
+
+{
+    <form asp-action="EditUser" asp-controller="CreateUser" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="ID" />
+
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" type="email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password">New Password (Leave blank to keep existing)</label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IsAdmin">Admin Privileges</label>
+            <input asp-for="IsAdmin" type="checkbox" class="form-check-input" />
+            <span asp-validation-for="IsAdmin" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <button type="button" onclick="location.href='@Url.Action("ListUsers", "AdminPanel")'" class="btn btn-secondary">Cancel</button>
+    </form>
+}

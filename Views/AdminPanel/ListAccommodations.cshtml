@@ -1,0 +1,93 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Accommodation>
+
+<h2>List of Accommodations</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>City</th>
+            <th>Location</th>
+            <th>Price</th>
+            <th>Amenities</th>
+            <th>Activities</th>
+            <th>Average Rating</th>
+            <th>Availability</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var accommodation in Model)
+
+        {
+            <tr>
+                <td>@accommodation.ID</td>
+                <td>@accommodation.Name</td>
+                <td>@accommodation.Type</td>
+                <td>@accommodation.City.Name</td>
+                <td>@accommodation.Location</td>
+                <td>@accommodation.Price</td>
+                <td>
+                    @if (accommodation.Amenities != null && accommodation.Amenities.Any())
+                    {
+                        @string.Join(", ", accommodation.Amenities.Select(a => a.Name))
+                    }
+                    else
+                    {
+                        <span>No amenities</span>
+                    }
+                </td>
+                <td>
+                    @if (accommodation.Activities != null && accommodation.Activities.Any())
+                    {
+                        @string.Join(", ", accommodation.Activities.Select(a => a.Name))
+                    }
+                    else
+                    {
+                        <span>No activities</span>
+                    }
+                </td>
+                <td>
+                    @if (accommodation.Average_Rating > 0)
+                    {
+                        @accommodation.Average_Rating;
+                    }
+                    else
+                    {
+                        <span>No ratings yet</span>
+                    }
+                </td>
+                <td>@(accommodation.Availability ? "Yes" : "No")</td>
+                <td>
+                    <button class="btn btn-warning" onclick="navigateToEdit('@accommodation.ID')">Edit</button>
+
+
+                    <form action="@Url.Action("DeleteAccommodation", "AdminPanel", new { id = accommodation.ID })" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("CreateAccommodation", "CreateAccommodation")" class="btn btn-primary">Add New Accommodation</a>
+<button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function navigateToEdit(id) {
+            // Redirect to the EditAccommodation action in the AdminPanel controller
+            window.location.href = `/CreateAccommodation/EditAccommodation/${id}`;
+        }
+    </script>
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure? Deleting this accommodation will also delete all related reviews.");
+        }
+    </script>
+}
+

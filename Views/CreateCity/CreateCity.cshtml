@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Create City";
+}
+
+<h2>Create City</h2>
+
+<form asp-action="CreateCity" asp-controller="CreateCity" method="post">
+    <div style="display: flex; flex-direction:column; gap: 40px;margin-top:50px;margin-bottom:40px">
+        <div>
+            <label for="Name">Name</label>
+            <input type="text" name="Name" id="Name" class="form-control" required />
+            @Html.ValidationMessage("Name", "City name cannot be null.")
+        </div>
+        <div>
+            <label for="Location">Location</label>
+            <input type="text" name="Location" id="Location" class="form-control" required />
+            @Html.ValidationMessage("Location", "Location cannot be null.")
+        </div>
+        <div>
+            <label for="Climate">Climate</label>
+            <input type="text" name="Climate" id="Climate" class="form-control" />
+        </div>
+        <div>
+            <label for="Terrain">Terrain</label>
+            <input type="text" name="Terrain" id="Terrain" class="form-control" />
+        </div>
+        <div>
+            <label for="Cost_Of_Living">Cost of Living</label>
+            <input type="number" name="Cost_Of_Living" id="Cost_Of_Living" class="form-control" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success">Create</button>
+    <button type="button" onclick="location.href='@Url.Action("ListCities", "AdminPanel")'" class="btn btn-secondary">Return</button>
+</form>

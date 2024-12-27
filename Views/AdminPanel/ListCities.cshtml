@@ -1,0 +1,82 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.City>
+<h2>List of Cities</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Climate</th>
+            <th>Terrain</th>
+            <th>Cost Of Living</th>
+            <th>Accommodations</th>
+            <th>Activities</th>
+            <th>Destinations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var city in Model)
+        {
+            <tr>
+                <td>@city.ID</td>
+                <td>@city.Name</td>
+                <td>@city.Location</td>
+                <td>@city.Climate</td>
+                <td>@city.Terrain</td>
+                <td>@city.Cost_Of_Living</td>
+                <td>
+                    @if (city.Accommodations != null && city.Accommodations.Any())
+                    {
+                        @string.Join(", ", city.Accommodations.Select(a => a.Name))
+                    }
+                    else
+                    {
+                        <span>No accommodations</span>
+                    }
+                </td>
+                <td>
+                    @if (city.Activities != null && city.Activities.Any())
+                    {
+                        @string.Join(", ", city.Activities.Select(a => a.Name))
+                    }
+                    else
+                    {
+                        <span>No activities</span>
+                    }
+                </td>
+                <td>
+                    @if (city.Destinations != null && city.Destinations.Any())
+                    {
+                        @string.Join(", ", city.Destinations.Select(a => a.Name))
+                    }
+                    else
+                    {
+                        <span>No destinations</span>
+                    }
+                </td>
+                <td>
+                    <button class="btn btn-warning" onclick="navigateToEdit('@city.ID')">Edit</button>
+                    <form asp-action="DeleteCity" method="post" onsubmit="return confirmDelete('@city.Name')">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@city.ID" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("CreateCity", "CreateCity")" class="btn btn-primary">Add New City</a>
+<button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
+@section Scripts {
+    <script>
+        function navigateToEdit(id) {
+            window.location.href = `/CreateCity/EditCity/${id}`;
+        }
+    </script>
+    <script>
+        function confirmDelete(cityName) {
+            return confirm(`Are you sure you want to delete the city '${cityName}' and all its related entities? This action cannot be undone.`);
+        }
+    </script>
+}

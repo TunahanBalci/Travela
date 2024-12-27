@@ -1,0 +1,122 @@
+2024-12-27 08:06:02.691 +03:00 [INF] Accessing Settings page
+2024-12-27 08:06:03.069 +03:00 [WRN] There are multiple relationships between 'Destination' and 'User' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Destination' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2024-12-27 08:06:03.179 +03:00 [WRN] The foreign key property 'Destination.UserID1' was created in shadow state because a conflicting property with the simple name 'UserID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2024-12-27 08:06:03.207 +03:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Accommodation'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 08:06:03.211 +03:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'Activity'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 08:06:03.214 +03:00 [WRN] No store type was specified for the decimal property 'Cost_Of_Living' on entity type 'City'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2024-12-27 08:06:03.592 +03:00 [INF] User initiated logout.
+2024-12-27 08:06:03.596 +03:00 [INF] User successfully logged out.
+2024-12-27 08:06:03.665 +03:00 [WRN] User not found in database. Email: test@test
+2024-12-27 08:07:39.367 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-12-27 08:07:39.422 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-12-27 08:07:47.306 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-12-27 08:08:13.300 +03:00 [INF] Accessing Settings page
+2024-12-27 08:08:13.303 +03:00 [INF] User settings successfully retrieved for Email: sdgfdsfgds@gmail.com
+2024-12-27 08:08:16.019 +03:00 [INF] FavoritedDestinations action invoked.
+2024-12-27 08:08:16.023 +03:00 [INF] Retrieved user: Testtt
+2024-12-27 08:08:16.028 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2024-12-27 08:08:16.044 +03:00 [INF] FavoritedDestinations: Retrieved 1 favorited destinations for user with ID: "ed30a510-e899-42de-86da-b5794c7f7c67"
+2024-12-27 08:08:18.066 +03:00 [INF] Accessing Settings page
+2024-12-27 08:08:18.070 +03:00 [INF] User settings successfully retrieved for Email: sdgfdsfgds@gmail.com
+2024-12-27 08:08:20.260 +03:00 [INF] Accessing Settings page
+2024-12-27 08:08:20.263 +03:00 [INF] User settings successfully retrieved for Email: sdgfdsfgds@gmail.com
+2024-12-27 08:08:23.709 +03:00 [INF] UpdateEmail request received with value: sdgfdsfgdds@gmail.com
+2024-12-27 08:08:23.713 +03:00 [INF] Retrieved user: Testtt
+2024-12-27 08:08:23.718 +03:00 [INF] Updating email for user with current Email: sdgfdsfgds@gmail.com
+2024-12-27 08:08:23.727 +03:00 [INF] Email successfully updated for user with Email: sdgfdsfgdds@gmail.com
+2024-12-27 08:08:23.731 +03:00 [ERR] An error occurred while updating the user's email.
+System.InvalidOperationException: No sign-in authentication handler is registered for the scheme 'Cookies'. The registered sign-in schemes are: CookieAuth. Did you forget to call AddAuthentication().AddCookie("Cookies",...)?
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.SignInAsync(HttpContext context, String scheme, ClaimsPrincipal principal, AuthenticationProperties properties)
+   at TravelApp.Controllers.AccountController.UpdateEmail(UpdateRequest request) in C:\Users\tunah\source\TravelApp\Controllers\AccountController.cs:line 161
+2024-12-27 08:08:24.869 +03:00 [INF] UpdateEmail request received with value: sdgfdsfgdds@gmail.com
+2024-12-27 08:08:24.873 +03:00 [WRN] GetCurrentUser could not find a user with Email: sdgfdsfgds@gmail.com
+2024-12-27 08:08:24.875 +03:00 [INF] Retrieved user: null
+2024-12-27 08:08:24.877 +03:00 [WRN] Unauthorized attempt to update email.
+2024-12-27 08:08:26.224 +03:00 [INF] UpdateName request received with value: Testtts
+2024-12-27 08:08:26.228 +03:00 [WRN] GetCurrentUser could not find a user with Email: sdgfdsfgds@gmail.com
+2024-12-27 08:08:26.230 +03:00 [INF] Retrieved user: null
+2024-12-27 08:08:26.232 +03:00 [WRN] Unauthorized attempt to update name.
+2024-12-27 08:08:26.755 +03:00 [INF] UpdateName request received with value: Testtts
+2024-12-27 08:08:26.758 +03:00 [WRN] GetCurrentUser could not find a user with Email: sdgfdsfgds@gmail.com
+2024-12-27 08:08:26.760 +03:00 [INF] Retrieved user: null
+2024-12-27 08:08:26.762 +03:00 [WRN] Unauthorized attempt to update name.
+2024-12-27 08:08:33.036 +03:00 [INF] UpdatePassword request received.
+2024-12-27 08:08:33.040 +03:00 [WRN] GetCurrentUser could not find a user with Email: sdgfdsfgds@gmail.com
+2024-12-27 08:08:33.042 +03:00 [INF] Retrieved user: null
+2024-12-27 08:08:33.044 +03:00 [WRN] Unauthorized attempt to update password.
+[2024-12-27 08:10:12 INF] Accessing Settings page
+[2024-12-27 08:10:12 WRN] There are multiple relationships between 'Destination' and 'User' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Destination' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+[2024-12-27 08:10:12 WRN] The foreign key property 'Destination.UserID1' was created in shadow state because a conflicting property with the simple name 'UserID' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+[2024-12-27 08:10:12 WRN] No store type was specified for the decimal property 'Price' on entity type 'Accommodation'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 08:10:12 WRN] No store type was specified for the decimal property 'Price' on entity type 'Activity'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 08:10:12 WRN] No store type was specified for the decimal property 'Cost_Of_Living' on entity type 'City'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+[2024-12-27 08:10:13 WRN] User not found in database. Email: sdgfdsfgds@gmail.com
+[2024-12-27 08:10:14 INF] Accessing Settings page
+[2024-12-27 08:10:14 WRN] User not found in database. Email: sdgfdsfgds@gmail.com
+[2024-12-27 08:10:20 INF] Accessing Settings page
+[2024-12-27 08:10:20 WRN] User not found in database. Email: sdgfdsfgds@gmail.com
+[2024-12-27 08:10:23 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:10:23 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:10:25 INF] Accessing Settings page
+[2024-12-27 08:10:25 WRN] User not found in database. Email: sdgfdsfgds@gmail.com
+[2024-12-27 08:11:06 INF] Accessing Settings page
+[2024-12-27 08:11:06 WRN] User not found in database. Email: sdgfdsfgds@gmail.com
+[2024-12-27 08:11:09 INF] Accessing Settings page
+[2024-12-27 08:11:09 WRN] User not found in database. Email: sdgfdsfgds@gmail.com
+[2024-12-27 08:11:15 INF] User initiated logout.
+[2024-12-27 08:11:15 INF] User successfully logged out.
+[2024-12-27 08:12:02 INF] Accessing Settings page
+[2024-12-27 08:12:02 INF] User settings successfully retrieved for Email: test@testss
+[2024-12-27 08:12:04 INF] UpdateEmail request received with value: test@testssss
+[2024-12-27 08:12:04 INF] Retrieved user: TestUser
+[2024-12-27 08:12:04 INF] Updating email for user with current Email: test@testss
+[2024-12-27 08:12:04 INF] Email successfully updated for user with Email: test@testssss
+[2024-12-27 08:12:04 ERR] An error occurred while updating the user's email.
+System.InvalidOperationException: No sign-in authentication handler is registered for the scheme 'Cookies'. The registered sign-in schemes are: CookieAuth. Did you forget to call AddAuthentication().AddCookie("Cookies",...)?
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.SignInAsync(HttpContext context, String scheme, ClaimsPrincipal principal, AuthenticationProperties properties)
+   at TravelApp.Controllers.AccountController.UpdateEmail(UpdateRequest request) in C:\Users\tunah\source\TravelApp\Controllers\AccountController.cs:line 161
+[2024-12-27 08:12:11 INF] UpdateName request received with value: TestUsersf
+[2024-12-27 08:12:11 INF] Retrieved user: TestUser
+[2024-12-27 08:12:11 INF] Updating name for user with Email: test@testssss
+[2024-12-27 08:12:11 INF] Name successfully updated for user with Email: test@testssss
+[2024-12-27 08:12:19 INF] UpdatePassword request received.
+[2024-12-27 08:12:19 INF] Retrieved user: TestUsersf
+[2024-12-27 08:12:19 INF] Password successfully updated for user with Email: test@testssss
+[2024-12-27 08:12:22 INF] UpdateEmail request received with value: test@testssss
+[2024-12-27 08:12:22 INF] Retrieved user: TestUsersf
+[2024-12-27 08:12:22 WRN] Attempt to update email to an already existing email: test@testssss
+[2024-12-27 08:12:32 INF] UpdateEmail request received with value: adsfsdfds@gmail.com
+[2024-12-27 08:12:32 INF] Retrieved user: TestUsersf
+[2024-12-27 08:12:32 INF] Updating email for user with current Email: test@testssss
+[2024-12-27 08:12:32 INF] Email successfully updated for user with Email: adsfsdfds@gmail.com
+[2024-12-27 08:12:32 ERR] An error occurred while updating the user's email.
+System.InvalidOperationException: No sign-in authentication handler is registered for the scheme 'Cookies'. The registered sign-in schemes are: CookieAuth. Did you forget to call AddAuthentication().AddCookie("Cookies",...)?
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.SignInAsync(HttpContext context, String scheme, ClaimsPrincipal principal, AuthenticationProperties properties)
+   at TravelApp.Controllers.AccountController.UpdateEmail(UpdateRequest request) in C:\Users\tunah\source\TravelApp\Controllers\AccountController.cs:line 161
+[2024-12-27 08:12:47 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:13:11 INF] User initiated logout.
+[2024-12-27 08:13:11 INF] User successfully logged out.
+[2024-12-27 08:14:43 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:14:59 INF] Accessing Settings page
+[2024-12-27 08:14:59 INF] User settings successfully retrieved for Email: new@gmail.com
+[2024-12-27 08:15:02 INF] FavoritedDestinations action invoked.
+[2024-12-27 08:15:02 INF] Retrieved user: NewUser
+[2024-12-27 08:15:02 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2024-12-27 08:15:02 INF] FavoritedDestinations: Retrieved 2 favorited destinations for user with ID: "39aa338f-195e-4dbb-9e56-c264408bf3dc"
+[2024-12-27 08:15:05 INF] RemoveFavoritedDestination request received for DestinationID: "eb4dc35e-fb21-4c00-bc78-4aff8d4996a5"
+[2024-12-27 08:15:05 INF] Retrieved user: NewUser
+[2024-12-27 08:15:05 INF] RemoveFavoritedDestination: Destination removed from user's favorites. DestinationID: "eb4dc35e-fb21-4c00-bc78-4aff8d4996a5"
+[2024-12-27 08:15:07 INF] Accessing Settings page
+[2024-12-27 08:15:07 INF] User settings successfully retrieved for Email: new@gmail.com
+[2024-12-27 08:15:10 INF] Accessing Settings page
+[2024-12-27 08:15:10 INF] User settings successfully retrieved for Email: new@gmail.com
+[2024-12-27 08:15:13 INF] AddPreference: Preference successfully added. PreferenceID: "ca1d0b8e-cf36-46f2-8583-ac4e49b4e24e"
+[2024-12-27 08:15:14 INF] Accessing Settings page
+[2024-12-27 08:15:14 INF] User settings successfully retrieved for Email: new@gmail.com
+[2024-12-27 08:15:19 INF] UpdateName request received with value: UserNew
+[2024-12-27 08:15:19 INF] Retrieved user: NewUser
+[2024-12-27 08:15:19 INF] Updating name for user with Email: new@gmail.com
+[2024-12-27 08:15:19 INF] Name successfully updated for user with Email: new@gmail.com
+[2024-12-27 08:15:26 INF] UpdatePassword request received.
+[2024-12-27 08:15:26 INF] Retrieved user: UserNew
+[2024-12-27 08:15:26 INF] Password successfully updated for user with Email: new@gmail.com

@@ -1,0 +1,100 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Review>
+
+<h2>List of Reviews</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>User</th>
+            <th>User ID</th>
+            <th>Entity</th>
+            <th>Entity ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model)
+        {
+            <tr>
+                <td>@review.ID</td>
+                <td>
+                    @if (@review.Rating.HasValue)
+                    {
+                        @review.Rating
+                    }
+                    else
+                    {
+                        <span>No rating</span>
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(review.Comment))
+                    {
+                        @review.Comment
+                    }
+                    else
+                    {
+                        <span>No comment</span>
+                    }
+                </td>
+                <td>@review.User.Name</td>
+                <td>@review.User.ID</td>
+                <td>
+                    @if (review.Destination != null)
+                    {
+                        <span>(Destination)</span> @review.Destination.Name
+                    }
+                    else if (review.Accommodation != null)
+                    {
+                        <span>(Accommodation)</span> @review.Accommodation.Name
+                    }
+                    else if (review.Activity != null)
+                    {
+                        <span>(Activity)</span> @review.Activity.Name
+                    }
+                    else
+                    {
+                        <span>No associated entity</span>
+                    }
+                </td>
+                <td>
+                    @if (review.Destination != null)
+                    {
+                        @review.Destination.ID
+                    }
+                    else if (review.Accommodation != null)
+                    {
+                        @review.Accommodation.ID
+                    }
+                    else if (review.Activity != null)
+                    {
+                        @review.Activity.ID
+                    }
+                    else
+                    {
+                        <span>Error - No ID</span>
+                    }
+                </td>
+                <td>
+                    <button class="btn btn-warning" onclick="navigateToEdit('@review.ID')">Edit</button>
+
+
+                    <form action="@Url.Action("DeleteReview", "AdminPanel", new { id = review.ID })" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this review?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("CreateReview", "CreateReview")" class="btn btn-primary">Add New Review</a>
+<button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
+@section Scripts {
+    <script>
+            function navigateToEdit(id) {
+            window.location.href = `/CreateReview/EditReview/${id}`;
+        }
+    </script>
+}

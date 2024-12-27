@@ -1,0 +1,136 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Destination>
+
+@{
+    ViewData["Title"] = "My Past Travels";
+
+
+
+    var reviewedDestinations = ViewBag.ReviewedDestinations as List<Guid> ?? new List<Guid>();
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">My Past Travels</h1>
+
+    @if (Model == null || !Model.Any())
+
+    {
+        <div class="alert alert-info text-center">
+            You haven't visited any destinations yet.
+        </div>
+    }
+
+    else
+
+    {
+        <div class="container mt-5 position-relative">
+            <div id="destinationContainer" class="row justify-content-center">
+                @foreach (var destination in Model)
+
+                {
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card h-100 text-center shadow">
+                            <a href="/Destination/Details/@destination.ID" class="text-decoration-none">
+                                <img class="card-img-top" src="@destination.Image_Path"
+                                     alt="@destination.Name"
+                                     onerror="this.onerror=null;this.src='/images/fallback_destination.png';"
+                                     style="height: 150px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 style="color:#526D82" class="card-title">@destination.Name</h5>
+                                    <p style="color:#526D82" class="card-text text-muted small">
+                                        @destination.City?.Name, @destination.Location
+                                    </p>
+                                    <div class="rating">
+                                        @{
+                                            var fullStars = (int)Math.Floor(destination.Average_Rating ?? 0.0);
+
+                                            var halfStar = (destination.Average_Rating ?? 0.0) % 1 >= 0.5;
+
+                                            var emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                                        }
+                                        @for (int i = 0; i < fullStars; i++)
+
+                                        {
+                                            <i class="fas fa-star" style="color: #ffc107; margin-right: 2px;"></i>
+                                        }
+                                        @if (halfStar)
+
+                                        {
+                                            <i class="fas fa-star-half-alt" style="color: #ffc107; margin-right: 2px;"></i>
+                                        }
+                                        @for (int i = 0; i < emptyStars; i++)
+
+                                        {
+                                            <i class="far fa-star" style="color: #ffc107; margin-right: 2px;"></i>
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                            <!-- Leave Review Button -->
+                            @if (!reviewedDestinations.Contains(destination.ID))
+                            {
+                                <div class="card-footer">
+                                    <a href="/Destination/Details/@destination.ID" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-pencil-alt"></i> Leave Review
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="text-center mt-4">
+    <a href="Settings" class="btn btn-secondary">Return to Account Page</a>
+</div>
+
+@section Styles {
+    <!-- Font Awesome for star icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .card {
+            position: relative;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+        .card-img-top {
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .rating {
+            margin-top: 5px;
+        }
+
+        .fas.fa-star,
+        .fas.fa-star-half-alt,
+        .far.fa-star {
+            font-size: 1rem;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .btn-outline-primary {
+            color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: #007bff;
+                color: white;
+            }
+    </style>
+}

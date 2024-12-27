@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Destination>
+<h2>List of Destinations</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>City</th>
+            <th>Average Rating</th>
+            <th>Activities</th>
+            <th>Attractions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var destination in Model)
+        {
+            <tr>
+                <td>@destination.ID</td>
+                <td>@destination.Name</td>
+                <td>@destination.Description</td>
+                <td>@destination.Location</td>
+                <td>@destination.City?.Name</td>
+                <td>
+                    @if (destination.Average_Rating.HasValue)
+                    {
+                        @destination.Average_Rating.Value.ToString("0.0")
+                    }
+                    else
+                    {
+                        <span>No ratings yet</span>
+                    }
+                </td>
+                <td>
+                    @if (destination.Activities != null && destination.Activities.Any())
+                    {
+                        @string.Join(", ", destination.Activities.Select(a => a.Name))
+                    }
+                    else
+                    {
+                        <span>No activities</span>
+                    }
+                </td>
+                <td>
+                    @if (destination.Attractions != null && destination.Attractions.Any())
+                    {
+                        @string.Join(", ", destination.Attractions.Select(a => a.Content))
+                    }
+                    else
+                    {
+                        <span>No attractions</span>
+                    }
+                </td>
+                <td>
+                    <button class="btn btn-warning" onclick="navigateToEdit('@destination.ID')">Edit</button>
+
+
+                    <form action="@Url.Action("DeleteDestination", "AdminPanel", new { id = destination.ID })" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this destination?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("CreateDestination", "CreateDestination")" class="btn btn-primary">Add New Destination</a>
+<button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
+@section Scripts {
+    <script>
+            function navigateToEdit(id) {
+            window.location.href = `/CreateDestination/EditDestination/${id}`;
+        }
+    </script>
+}

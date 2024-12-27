@@ -1,0 +1,29 @@
+﻿@model TravelApp.Models.Entities.Preference
+
+@{
+    ViewData["Title"] = "Create Preference";
+}
+
+<h2>Create Preference</h2>
+
+<form asp-action="CreatePreference" asp-controller="CreatePreference" method="post">
+    @* Display Validation Summary *@
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 40px; margin-top: 50px; margin-bottom: 40px">
+        <!-- Content Field -->
+        <div class="form-group">
+            <label for="Content">Content</label>
+            <input type="text" name="Content" id="Content" class="form-control" required />
+            @Html.ValidationMessageFor(model => model.Content, "Content cannot be null.")
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <button type="submit" class="btn btn-success">Create</button>
+    <button type="button" onclick="location.href='@Url.Action("ListPreferences", "AdminPanel")'" class="btn btn-secondary">Return</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

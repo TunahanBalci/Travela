@@ -1,0 +1,202 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Destination>
+
+@{
+    ViewData["Title"] = "My Favorited Destinations";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">My Favorited Destinations</h1>
+
+    <!-- Feedback Message Section -->
+    <div id="feedbackMessage" class="text-center mb-4" style="display: none;">
+        <div id="feedbackContent" class="alert" role="alert"></div>
+    </div>
+
+    @if (Model == null || !Model.Any())
+
+    {
+        <div class="alert alert-info text-center">
+            You haven't favorited any destinations yet.
+        </div>
+    }
+
+    else
+
+    {
+        <div class="container mt-5 position-relative">
+            <div id="destinationContainer" class="row justify-content-center">
+                @foreach (var destination in Model)
+
+                {
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card h-100 text-center shadow">
+                            <a href="/Destination/Details/@destination.ID" class="text-decoration-none">
+                                <img class="card-img-top" src="@destination.Image_Path"
+                                     alt="@destination.Name"
+                                     onerror="this.onerror=null;this.src='/images/fallback_destination.png';"
+                                     style="height: 150px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 style="color:#526D82" class="card-title">@destination.Name</h5>
+                                    <p style="color:#526D82" class="card-text text-muted small">
+                                        @destination.City?.Name, @destination.Location
+                                    </p>
+                                    <div class="rating">
+                                        @{
+                                            var fullStars = (int)Math.Floor(destination.Average_Rating ?? 0.0);
+
+                                            var halfStar = (destination.Average_Rating ?? 0.0) % 1 >= 0.5;
+
+                                            var emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                                        }
+                                        @for (int i = 0; i < fullStars; i++)
+
+                                        {
+                                            <i class="fas fa-star" style="color: #ffc107; margin-right: 2px;"></i>
+                                        }
+                                        @if (halfStar)
+
+                                        {
+                                            <i class="fas fa-star-half-alt" style="color: #ffc107; margin-right: 2px;"></i>
+                                        }
+                                        @for (int i = 0; i < emptyStars; i++)
+
+                                        {
+                                            <i class="far fa-star" style="color: #ffc107; margin-right: 2px;"></i>
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                            <!-- Remove from Favorites Button -->
+                            <div class="card-footer">
+                                <button class="btn btn-outline-danger btn-sm remove-favorite" data-id="@destination.ID">
+                                    <i class="fas fa-heart-broken"></i> Remove from Favorites
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="text-center mt-4">
+    <a href="Settings" class="btn btn-secondary">Return to Account Page</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.remove-favorite').click(function() {
+                var destinationId = $(this).data('id');
+                var button = $(this);
+
+                showFeedback('warning', 'Are you sure you want to remove this destination from your favorites?', true, function() {
+                    $.ajax({
+                        url: '@Url.Action("RemoveFavoritedDestination", "Account")',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        headers: {
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        data: JSON.stringify({ DestinationId: destinationId }), // Ensure the property matches the DTO
+                        success: function(response) {
+                            if (response.success) {
+                                button.closest('.col-md-4').remove();
+                                showFeedback('success', response.message);
+                            } else {
+                                showFeedback('danger', response.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            showFeedback('danger', 'An error occurred while removing the destination from your favorites.');
+                        }
+                    });
+
+                });
+            });
+
+            function showFeedback(type, message, isConfirm = false, confirmCallback = null) {
+                var feedbackDiv = $('#feedbackMessage');
+                var feedbackContent = $('#feedbackContent');
+
+                feedbackContent.removeClass('alert-success alert-danger alert-warning')
+                    .addClass('alert-' + type)
+                    .html(message);
+
+                feedbackDiv.fadeIn();
+
+                if (isConfirm) {
+                    feedbackContent.append(
+                        `<div class="mt-2">
+                                    <button id="confirmYes" class="btn btn-success btn-sm">Yes</button>
+                                    <button id="confirmNo" class="btn btn-secondary btn-sm">No</button>
+                                 </div>`
+                    );
+
+                    $('#confirmYes').click(function() {
+                        feedbackDiv.fadeOut();
+                        confirmCallback();
+                    });
+
+                    $('#confirmNo').click(function() {
+                        feedbackDiv.fadeOut();
+                    });
+                } else {
+                    setTimeout(function() {
+                        feedbackDiv.fadeOut();
+                    }, 5000);
+                }
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <!-- Font Awesome for star icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .card {
+            position: relative;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+        .card-img-top {
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .rating {
+            margin-top: 5px;
+        }
+
+        .fas.fa-star,
+        .fas.fa-star-half-alt,
+        .far.fa-star {
+            font-size: 1rem;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .btn-outline-danger {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+            .btn-outline-danger:hover {
+                background-color: #dc3545;
+                color: #fff;
+            }
+    </style>
+}

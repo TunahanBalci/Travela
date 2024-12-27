@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TravelApp.Models.Entities.Amenity>
+
+@{
+    ViewData["Title"] = "List of Amenities";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Accommodations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var amenity in Model)
+
+        {
+            <tr>
+                <td>@amenity.ID</td>
+                <td>@amenity.Name</td>
+                <td>
+                    @if (amenity.Accommodations != null && amenity.Accommodations.Any())
+                    {
+                        @string.Join(", ", amenity.Accommodations.Select(a => a.Name))
+                    }
+                    else
+                    {
+                        <span>No accommodations</span>
+                    }
+                </td>
+                <td>
+                    <button class="btn btn-warning" onclick="navigateToEdit('@amenity.ID')">Edit</button>
+
+
+                    <form action="@Url.Action("DeleteAmenity", "AdminPanel", new { id = amenity.ID })" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this amenity?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("CreateAmenity", "CreateAmenity")" class="btn btn-primary">Add New Amenity</a>
+<button class="btn btn-secondary" onclick="location.href='@Url.Action("List", "AdminPanel")'">Return</button>
+@section Scripts {
+    <script>
+        function navigateToEdit(id) {
+            window.location.href = `/CreateAmenity/EditAmenity/${id}`;
+        }
+    </script>
+}
