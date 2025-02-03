@@ -1,4 +1,4 @@
-# Travel Web Application
+# Travela - A Travel Planning Website
 
 ## Overview
 
