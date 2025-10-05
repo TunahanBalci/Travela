@@ -1,5 +1,7 @@
 # Travela - A Travel Planning Website
 
+<img width="881" height="804" alt="Screenshot 2025-10-05 220210" src="https://github.com/user-attachments/assets/7d395860-9a84-40df-8cf8-e362e1515d11" />
+
 ## Overview
 
 Travela is a dynamic web application built with ASP.NET Core 8.0 MVC that allows users to explore various travel destinations and accommodations. Users can sign up, manage their profiles, favorite destinations, book accommodations, and access detailed reviews and statistics. Administrators have access to a comprehensive admin panel to manage entities within the application.
